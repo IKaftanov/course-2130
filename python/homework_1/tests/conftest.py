@@ -12,6 +12,6 @@ def pytest_configure(config):
 
 
 def pytest_generate_tests(metafunc):
-    with open(f'tests\\{pytest.path_to_cases}', 'r', encoding="utf-8") as file:
+    with open(f'tests/{pytest.path_to_cases}', 'r', encoding="utf-8") as file:
         cases = json.load(file)
     metafunc.parametrize('case', cases[metafunc.function.__name__.split('_')[-1]])
