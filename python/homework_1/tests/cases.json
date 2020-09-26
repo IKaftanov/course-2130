@@ -1,0 +1,246 @@
+{
+  "t1": [
+    {
+      "input": 3,
+      "output": 20
+    },
+    {
+      "input": -5,
+      "output": 0
+    },
+    {
+      "input": 19,
+      "output":20
+    }
+  ],
+  "t2": [
+    {
+      "input": "abc abc abc",
+      "output": "cba cba cba"
+    },
+    {
+      "input": "",
+      "output": ""
+    }
+  ],
+  "t3": [
+    {
+      "input": {"a": 1, "b": 2},
+      "output": "a: 1; b: 2"
+    },
+    {
+      "input": {},
+      "output": ""
+    }
+  ],
+  "t4": [
+    {
+      "input": "abcd",
+      "input2": "bc",
+      "output": true
+    },
+    {
+      "input": "",
+      "input2": "",
+      "output": true
+    },
+    {
+      "input": "ab",
+      "input2": "cx",
+      "output": false
+    }
+  ],
+  "t5": [
+    {
+      "input": ["1 2 3 6", "0 5 1 0", "1 1 1 2", "1 1 0 1"],
+      "output": ["1 2 3 6", "0 5 1 0"]
+    }
+  ],
+  "t6": [
+    {
+      "input": "abc#d##c",
+      "output": "ac"
+    },
+    {
+      "input": "abc##d######",
+      "output": ""
+    },
+    {
+      "input": "#######",
+      "output": ""
+    },
+    {
+      "input": "",
+      "output": ""
+    }
+  ],
+  "t7": [
+    {
+      "input": [4, 5, 7, 5, 4, 8],
+      "output": 15
+    },
+    {
+      "input": [9, 10, 19, 13, 19, 13],
+      "output": 19
+    },
+    {
+      "input": [16, 0, 11, 4, 8, 16, 0, 11],
+      "output": 12
+    },
+    {
+      "input": [5, 17, 18, 11, 13, 18, 11, 13],
+      "output": 22
+    },
+    {
+      "input": [5, 10, 19, 13, 10, 13],
+      "output": 24
+    },
+    {
+      "input": [],
+      "output": 0
+    }
+  ],
+  "t8": [
+    {
+      "input": "gh12cdy695m1",
+      "output": 695
+    }
+  ],
+  "t9": [
+    {
+      "input": 5,
+      "output": "00005"
+    },
+    {
+      "input": 10,
+      "output": "00010"
+    },
+    {
+      "input": 200002,
+      "output": "200002"
+    }
+  ],
+  "t10": [
+    {
+      "input": "GB",
+      "output": "R"
+    },
+    {
+      "input": "RRR",
+      "output": "R"
+    },
+    {
+      "input": "RGBG",
+      "output": "B"
+    },
+    {
+      "input": "RBRGBRB",
+      "output": "G"
+    },
+    {
+      "input": "RBRGBRBGGRRRBGBBBGG",
+      "output": "G"
+    },
+    {
+      "input": "B",
+      "output": "B"
+    }
+  ],
+  "t11": [
+    {
+      "input": [1, 2, 3, 5, 3, 2, 1],
+      "output": 3
+    },
+    {
+      "input": [1, 12, 3, 3, 6, 3, 1],
+      "output": 2
+    },
+    {
+      "input": [10, 20, 30, 40],
+      "output": -1
+    }
+  ],
+  "t12": [
+    {
+      "input":  ["Что-то происходит бла бла бла +7495 123-45-67", "Звони 8 495 123-45-67 мне", "По вопросам рекламы +7(499)123-45-67"],
+      "output": ["84951234567", "84951234567", "84991234567"]
+    }
+  ],
+  "t13": [
+    {
+      "input":  248,
+      "input2": 208,
+      "output": 4416
+    },
+    {
+      "input":  16,
+      "input2": 18,
+      "output": 214
+    },
+    {
+      "input":  26,
+      "input2": 39,
+      "output": 515
+    },
+    {
+      "input":  122,
+      "input2": 81,
+      "output": 1103
+    },
+    {
+      "input":  2,
+      "input2": 11,
+      "output": 13
+    },
+    {
+      "input":  0,
+      "input2": 1,
+      "output": 1
+    },
+    {
+      "input":  0,
+      "input2": 0,
+      "output": 0
+    }
+  ],
+  "t14": [
+    {
+      "input":  "1 + 3",
+      "output": "One Plus Three"
+    },
+    {
+      "input":  "2 - 10",
+      "output": "Two Minus Ten"
+    },
+    {
+      "input":  "6 ** 9",
+      "output": "Six To The Power Of Nine"
+    },
+    {
+      "input":  "5 = 5",
+      "output": "Five Equals Five"
+    },
+    {
+      "input":  "7 * 4",
+      "output": "Seven Times Four"
+    },
+    {
+      "input":  "2 / 2",
+      "output": "Two Divided By Two"
+    },
+    {
+      "input":  "8 != 5",
+      "output": "Eight Does Not Equal Five"
+    }
+  ],
+  "t15": [
+    {
+      "input":  [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+      "output": 30
+    },
+    {
+      "input":  [[1, 2], [7, 8]],
+      "output": 18
+    }
+  ]
+}
