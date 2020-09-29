@@ -32,7 +32,11 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
-    return str(dictionary).replace(',', ';')[1:-1].replace("'", "")
+    items = list(dictionary.items())
+    string = ''
+    for item in items:
+         string += str(item[0])+': '+str(item[1])+'; '
+    return string[:-1]
 
 
 def t4(string, sub_string):
