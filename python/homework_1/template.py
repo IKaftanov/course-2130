@@ -6,6 +6,8 @@
     Разрешается использовать только стандартные библиотеки языка.
 """
 
+import re
+import itertools
 
 def t1(number):
     """
@@ -15,7 +17,11 @@ def t1(number):
     Пример: -5 -> 0
 
     """
-    pass
+    # А в Python 3.8+ можно использовать walrus operator,
+    # чтобы не вычислять (number % 20) дважды:
+    #
+    # return number + 20 - rem if rem := number % 20 else number
+    return number + 20 - number % 20 if number % 20 else number
 
 
 def t2(string):
@@ -24,7 +30,15 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
-    pass
+    return ' '.join( # 4. Объединили всё в одну строку
+        map(
+            ''.join, # 3. Сцепили каждый генератор в строку
+            map(
+                reversed, # 2. Развернули каждое "слово", получили генератор
+                string.split() # 1. Разбили по пробелам
+            )
+        )
+    )
 
 
 def t3(dictionary):
@@ -32,22 +46,51 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
-    pass
+    return '; '.join(f'{key}: {value}' for key, value in dictionary.items())
 
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
-    pass
+    return sub_string[::-1] in string
 
 
 def t5(strings):
     """
     На вход подается список строк,
-    Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
+    Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные (судя по тестам - неотрицательные) числа
     """
-    pass
+
+    def check_one(s: str) -> bool:
+        nonneg_ints = (
+            n if n >= 0 else None # 2. Отрицательные числа заменяем чем-то неумножаемым
+            for n in map(int, s.split()) # 1. Попытались преобразовать в числа
+        ) # Это ленивая операция!!
+
+        try:
+            # Попытались распаковать.
+            # 
+            # В этот момент происходит попытка конвертации в число
+            # и вылетает исключение, если конвертация не прошла.
+            # Также вылетает исключение, если элементов не 4.
+            x, y, z, prod = nonneg_ints
+
+            # Это выбрасывает исключение, если один из
+            # перемножаемых элементов является None
+            # (см. выражение-генератор выше).
+            # Также возвращает False, если prod is None.
+            return x * y * z == prod
+        except:
+            # Если поймали исключение, то эта строка не годится
+            return False
+
+    # Наконец, фильтруем список строк.
+    # 
+    # Чёт сложно и вообще спагетти-код, опирающийся
+    # на особенности Питона (что выбрасывает исключение, а что - нет),
+    # но вроде работает и вроде прикольно)
+    return list(filter(check_one, strings))
 
 
 def t6(string):
@@ -60,7 +103,14 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    pass
+    state = ''
+    for char in string:
+        if char == "#":
+            state = state[:-1] # Работает, даже когда строка пустая
+        else:
+            state += char
+
+    return state
 
 
 def t7(lst):
@@ -69,7 +119,13 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
-    pass
+    return sum(
+        elem
+        for elem, grouper in itertools.groupby( # 2. Нашли цепочки дубликатов (grouper)
+            sorted(lst) # 1. В отсортированном списке дубликаты идут друг за другом
+        )
+        if sum(grouper) == elem # 3. Это выполняется только если в цепочке ровно одно число
+    )
 
 
 def t8(string):
@@ -78,7 +134,12 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
-    pass
+    return max( # 3. Нашли максимум среди этих чисел
+        map(
+            int, # 2. Преобразовали каждую такую подстроку в целое число
+            re.findall(r'\d+', string) # 1. Нашли все подстроки, состоящие только из символов "0-9"
+        )
+    )
 
 
 def t9(number):
@@ -87,7 +148,8 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
-    pass
+    # Форматирование строк рулит!
+    return f'{number:05d}'
 
 
 def t10(string):
@@ -108,18 +170,48 @@ def t10(string):
            G  <-- вывод
 
     """
-    pass
+    if len(string) == 1:
+        return string
+
+    try:
+        # Проверяем, что длина строки ровно 2
+        a, b = string
+    except ValueError:
+        # Если не 2, смешиваем текущую строку...
+        mixed = (
+            t10(c1 + c2)
+            for c1, c2 in zip(string[:-1], string[1:])
+        )
+        # ...и отправляем результат дальше на смешивание
+        return t10(''.join(mixed))
+    else:
+        # Здесь в строке 2 элемента
+        if a == b:
+            return a
+
+        r, = {'R', 'G', 'B'} - set(string)
+        return r
 
 
 def t11(lst):
     """
-    Вам дам список из целых чисел. Найдите индекс числа такого, что левая и правая части списка от него равны
-        Если такого элемента нет - верните -1. Если вы нашли два элемента -> верните тот, который левее.
+    Вам дам список из целых чисел. Найдите индекс числа такого, что суммы левой и правой частей списка от него равны
+        Если такого элемента нет - верните -1. Если вы нашли два элемента -> верните индекс того, который левее.
     [1,2,3,5,3,2,1] = 3
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
-    pass
+    # Здесь считается, что сумма пустого списка не определена,
+    # поэтому индексы считаются с единицы и заканчиваются
+    # предпоследним возможным
+    for index in range(1, len(lst) - 1):
+        elem = lst[index]
+        left, right = lst[:index], lst[index + 1:]
+
+        if sum(left) == sum(right):
+            return index
+
+    return -1
 
 
 def t12(lst):
@@ -131,7 +223,18 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
-    pass
+    REGEX = re.compile(r'(\+7|7|8)\s*\(?\s*(\d{3})\s*\)?\s*(\d{3})-?(\d\d)-?(\d\d)')
+
+    phone_numbers = []
+    for line in lst:
+        country, city, three, two, two_ = REGEX.search(line).groups()
+
+        phone_numbers.append(
+            ('8' if country == '+7' else country) +
+            city + three + two + two_
+        )
+
+    return phone_numbers
 
 
 def t13(number_1, number_2):
@@ -141,7 +244,22 @@ def t13(number_1, number_2):
        +208
         4416
     """
-    pass
+    # Работает также с числами разной длины
+
+    # 1. Складывать начинаем с конца числа (справа),
+    # поэтому каждое число надо перевернуть
+    # 129 => [9, 2, 1]
+    transformer = lambda num: map(int, reversed(str(num)))
+    n1, n2 = transformer(number_1), transformer(number_2)
+
+    # 2. Приводим оба числа к одинаковой длине, вставляя нули в короткое число,
+    # и складываем цифры. Результат по-прежнему задом наперёд.
+    # [9, 2, 1] + [3, 1] => [9, 2, 1] + [3, 1, 0] => [9 + 3, 2 + 1, 1 + 0]
+    digits_sums = [a + b for a, b in itertools.zip_longest(n1, n2, fillvalue=0)]
+
+    # 3. Переворачиваем 
+    # [12, 3, 1] => [1, 3, 12] => '1312' => 1312
+    return int(''.join(map(str, reversed(digits_sums))))
 
 
 def t14(string):
@@ -161,7 +279,23 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
-    pass
+    map_op = {
+        '+':   'Plus ',
+        '-':   'Minus ',
+        '*':   'Times ',
+        '/':   'Divided By ',
+        '**':  'To The Power Of ',
+        '=':   'Equals ',
+        '!=':  'Does Not Equal '
+    }
+    map_num = [
+        'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+        'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+    ]
+
+    left, op, right = string.split()
+
+    return f'{map_num[int(left)]} {map_op[op]}{map_num[int(right)]}'
 
 
 def t15(lst):
@@ -173,5 +307,13 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+    left, right = 0, -1
+    the_sum = 0
+
+    for row in lst:
+        the_sum += row[left] + row[right]
+        left += 1
+        right -= 1
+
+    return the_sum
 
