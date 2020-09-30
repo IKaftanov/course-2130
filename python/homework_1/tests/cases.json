@@ -11,6 +11,10 @@
     {
       "input": 19,
       "output":20
+    },
+    {
+      "input": 20,
+      "output":20
     }
   ],
   "t2": [
@@ -36,7 +40,7 @@
   "t4": [
     {
       "input": "abcd",
-      "input2": "bc",
+      "input2": "cb",
       "output": true
     },
     {
