@@ -1,7 +1,8 @@
 import logging
 
 import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
 
 from weather_api import WeatherAPI
 from tokens import YANDEX_WEATHER_API_KEY, TELEGRAM_KEY
@@ -16,40 +17,65 @@ WEATHER_COMMAND_SELECTION = 0
 WEATHER_RETURN = 1
 
 
-def start(update, context):
+def start(update: Update, context: CallbackContext):
     """Send a message when the command /start is issued."""
-
+    
     update.message.reply_text('Welcome to my weather API bot')
 
 
 def get_weather_start(update, context):
-    reply_markup = telegram.ReplyKeyboardMarkup([[telegram.KeyboardButton('send my location', request_location=True)]])
+    reply_markup = ReplyKeyboardMarkup([[KeyboardButton('send my location', request_location=True)]])
     update.message.reply_text('Send me the coordinates or /cancel', reply_markup=reply_markup)
     return 0
 
 
 def coordinates_handler(update, context):
-    reply_markup = telegram.ReplyKeyboardMarkup(
-        [[telegram.KeyboardButton(item) for item in WEATHER_CONVERSATION_COMMANDS]]
+    reply_markup = ReplyKeyboardMarkup(
+        [[KeyboardButton(item) for item in WEATHER_CONVERSATION_COMMANDS]]
     )
-    update.message.reply_text('Thank you. You location is captured', reply_markup=reply_markup)
-    # find and save location property in update
-    # you can use `context.user_data["location"]` to save user data
+
+    context.user_data["location"] = update.message.location
+    update.message.reply_text(
+        'Thank you. You location {} is captured'.format(context.user_data["location"]),
+        reply_markup=reply_markup
+    )
     return 1
 
 
-def weather_handler(update, context):
+def weather_handler(update: Update, context: CallbackContext):
     if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
-        update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
-        # TODO: send a current weather from yandex there
+        loc = context.user_data['location']
+        reply = weather_api.get_current_weather(loc['latitude'], loc['longitude'])
+        
+        update.message.reply_text('''
+Current weather for {name}, time: {current_time}:
+
+Condition: {condition}
+Temperature: {temp} °C
+Wind speed: {wind_speed} m/s
+        '''.strip().format(**reply),
+        reply_markup=telegram.ReplyKeyboardRemove()
+        )
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
-        update.message.reply_text('forecast', reply_markup=telegram.ReplyKeyboardRemove())
-        # TODO: send a forecast of weather from yandex there
+        loc = context.user_data['location']
+        reply = weather_api.get_forecast(loc['latitude'], loc['longitude'])
+
+        for day in reply:
+            update.message.reply_text('''
+Day {day}:
+    Condition: {condition}
+    Avg temperature: {temp} °C
+    Sunrise at {sunrise}
+    Sunset at {sunset}
+            '''.strip().format(**day))
+
+        update.message.reply_text("That's it", reply_markup=telegram.ReplyKeyboardRemove())
+
     return ConversationHandler.END
 
 
 def cancel(update, context):
-    update.message.reply_text('Ok, thank you for your attention!', reply_markup=telegram.ReplyKeyboardRemove())
+    update.message.reply_text('Ok, thank you for your attention!', reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 
