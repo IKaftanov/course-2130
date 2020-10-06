@@ -15,7 +15,7 @@ def t1(number):
     Пример: -5 -> 0
 
     """
-    pass
+    return number if number%20 == 0 else number + 20 - (number % 20)
 
 
 def t2(string):
@@ -24,7 +24,7 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
-    pass
+    return " ".join([i[::-1] for i in string.split(' ')])
 
 
 def t3(dictionary):
@@ -32,22 +32,22 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
-    pass
+    return str(dictionary).replace(",", ";").replace("{", "").replace("}", "").replace("'", "")
 
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
-    pass
-
+    return string.find(sub_string[::-1]) != -1
 
 def t5(strings):
     """
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
-    pass
+    nums = [i.split(" ") for i in strings]
+    return [" ".join(i) for i in nums if int(i[0]) * int(i[1]) * int(i[2]) == int(i[3])]
 
 
 def t6(string):
@@ -60,7 +60,17 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    pass
+    del_count = 0
+    s = ""
+    for i in string[::-1]:
+        if i!= "#":
+            if del_count == 0:
+                s += i
+            else:
+                del_count -= 1
+        else:
+            del_count += 1
+    return s[::-1]
 
 
 def t7(lst):
@@ -69,7 +79,7 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
-    pass
+    return sum([i for i in lst if lst.count(i) == 1])
 
 
 def t8(string):
@@ -87,7 +97,7 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
-    pass
+    return str(number) if len(str(number)) >=5 else "0"*(5-len(str(number)) )+ str(number)
 
 
 def t10(string):
@@ -108,8 +118,21 @@ def t10(string):
            G  <-- вывод
 
     """
+    # colors = {"GG" : "G",
+    #           "BG" : "R",
+    #           "GB" : "R",
+    #           "RG" : "B",
+    #           "GR" : "B",
+    #           "BR" : "G",
+    #           "RB" : "G",
+    #           "RR" : "R",
+    #           "BB" : "B"}
+    #
+    # while len(string) != 1:
+    #     for i in colors.keys():
+    #         string = string.replace(i, colors[i])
+    # return string
     pass
-
 
 def t11(lst):
     """
@@ -119,8 +142,10 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
-    pass
-
+    for i in range(len(lst)-1):
+        if sum(lst[0:i]) == sum(lst[i+1:len(lst)]):
+            return i
+    return -1
 
 def t12(lst):
     """
