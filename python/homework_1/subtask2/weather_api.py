@@ -4,13 +4,14 @@ from datetime import timedelta
 
 class WeatherAPI:
 
-    def __init__(self, api_key):
+    def __init__(self, api_key, api_url='https://api.weather.yandex.ru/v2/forecast?lat={}&lon={}&extra=true'):
         self.api_key = api_key
-
+        self.api_url = api_url
+        
     def get_current_weather(self, lat, lon):
         
-        api_url = f'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
-        weather = requests.get(api_url, headers={'X-Yandex-API-Key': self.api_key}).json()
+        weather = requests.get(self.api_url.format(lat, lon), 
+                               headers={'X-Yandex-API-Key': self.api_key}).json()
         name = weather['info']['tzinfo']['name']  
         current_time = weather['now_dt']
         current_time = dt.strftime(dt.strptime(current_time[:-5], '%Y-%m-%dT%H:%M:%S') + 
@@ -34,8 +35,8 @@ class WeatherAPI:
 
     def get_forecast(self, lat, lon):
 
-        api_url = f'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
-        weather = requests.get(api_url, headers={'X-Yandex-API-Key': self.api_key}).json()
+        weather = requests.get(self.api_url.format(lat, lon), 
+                               headers={'X-Yandex-API-Key': self.api_key}).json()
         forecasts = []
         day = 0
         for forecast in weather['forecasts']:
@@ -47,8 +48,9 @@ class WeatherAPI:
                     temps.append(forecast['parts'][part]['temp_avg'])
                     conditions.append(forecast['parts'][part]['condition'])
                 except KeyError:
-                    pass
+                    continue
             cnt_base = 0
+            condition = 'н/д'
             for k in conditions:
                 cnt = conditions.count(k)
                 if cnt > cnt_base:
