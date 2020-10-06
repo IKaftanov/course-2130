@@ -15,6 +15,12 @@ def t1(number):
     Пример: -5 -> 0
 
     """
+    x = int(number)
+    if x % 20 == 0:
+        return x
+    else:
+        return x // 20 * 20 + 20
+
     pass
 
 
@@ -24,14 +30,33 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
-    pass
 
+    def reverse_word(x):
+        return x[::-1]
+
+    x = string.split()
+    list = []
+    r = ""
+    for i in x:
+        res = reverse_word(i)
+        list.append(res)
+        r = " ".join(list)
+    return r
+
+    pass
 
 def t3(dictionary):
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
+    r = ""
+    list = []
+    for key, value in dictionary.items():
+        res = key + ": " + str(value)
+        list.append(res)
+        r = "; ".join(list)
+    return r
     pass
 
 
@@ -39,6 +64,14 @@ def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
+    x = string
+    y = sub_string
+    reverse_y = y[::-1]
+    if reverse_y in x:
+        res = True
+    else:
+        res = False
+    return res
     pass
 
 
@@ -47,6 +80,16 @@ def t5(strings):
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
+    l = []
+    for i in strings:
+        x = i.split(" ")
+        a = int(x[0])
+        b = int(x[1])
+        c = int(x[2])
+        d = int(x[3])
+        if d == a * b * c:
+            l.append(i)
+    return l
     pass
 
 
@@ -60,8 +103,17 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    pass
+    s1 = []
 
+    for i in string:
+
+        if i == '#':
+            if s1:
+                s1.pop()
+        else:
+            s1.append(i)
+    return ''.join(s1)
+    pass
 
 def t7(lst):
     """
@@ -69,6 +121,21 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
+    try:
+        list = []
+        t = 0
+        for k in lst:
+            list.append(int(k))
+            t += int(k)
+        a = 0
+        for i in range(len(list)):
+            if list.count(list[i]) > 1:
+                a += int(list[i])
+            else:
+                pass
+        return t - a
+    except ValueError:
+        return 0
     pass
 
 
@@ -78,6 +145,20 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
+    x = string
+    a = 0
+    i = 0
+    l = []
+    while i < len(x):
+        try:
+            a = a * 10 + int(x[i])
+        except ValueError:
+            a = 0
+            l.append(a)
+        l.append(a)
+        i += 1
+    out = max(l)
+    return out
     pass
 
 
@@ -87,6 +168,20 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
+
+    def l(num):
+        a = 0
+        while num != 0:
+            a += 1
+            num = num // 10
+        return a
+
+    if number <= 99999:
+        t = 5 - l(number)
+        out = "0" * t + str(number)
+    else:
+        out = str(number)
+    return out
     pass
 
 
@@ -108,6 +203,23 @@ def t10(string):
            G  <-- вывод
 
     """
+    x = string
+    s = {"B", "G", "R"}
+    i = 0
+    if len(x) == 1:
+        a = x[0]
+    else:
+        while i < len(x) - 1:
+            if x[i] == x[i + 1]:
+                a = x[i]
+            else:
+                s.remove(x[i])
+                s.remove(x[i + 1])
+                a = "".join(s)
+            i += 1
+            s = {"B", "G", "R"}
+
+    return a
     pass
 
 
@@ -119,6 +231,26 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
+
+    def sum(list):
+        t = 0
+        for i in range(len(list)):
+            t = t + int(list[i])
+        return t
+
+    a = 0
+    for i in range(len(lst)):
+        xl = lst[:i]
+        xr = lst[i + 1:]
+        if sum(xl) == sum(xr):
+            return i
+            a += 1
+            break
+        else:
+            pass
+    if a == 0:
+        return -1
+
     pass
 
 
@@ -131,6 +263,17 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
+    import re
+    list = []
+    for str in lst:
+        x = re.sub(r'\W', "", str)
+        num = re.compile(r"(7\d{10}|8\d{10})")
+        X = re.findall(num, x)
+        X1 = X[0]
+        X2 = "8" + X1[1:]
+        list.append(X2)
+
+    return list
     pass
 
 
@@ -141,6 +284,27 @@ def t13(number_1, number_2):
        +208
         4416
     """
+    x1 = str(number_1)
+    x2 = str(number_2)
+    l = 0
+    if len(x1) > len(x2):
+        l = len(x1)
+    else:
+        l = len(x2)
+    i = 1
+    x = ""
+    while i <= l:
+        try:
+            xi = int(x1[-i]) + int(x2[-i])
+        except IndexError:
+            try:
+                xi = int(x1[-i])
+            except IndexError:
+                xi = int(x2[-i])
+        xi = str(xi)
+        x = xi + x
+        i += 1
+    return int(x)
     pass
 
 
@@ -161,6 +325,24 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
+    dict1 = {'**': 'To The Power Of', '10': 'Ten', '!=': 'Does Not Equal'}
+    dict2 = {'+': 'Plus',
+             '-': 'Minus',
+             '*': 'Times',
+             '/': 'Divided By',
+             '=': 'Equals',
+             '0': 'Zero', '1': 'One',
+             '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five',
+             '6': 'Six', '7': 'Seven',
+             '8': 'Eight', '9': 'Nine'}
+    list1 = list(dict1.keys())
+    list2 = list(dict2.keys())
+    x = string
+    for i in list1:
+        x = x.replace(i, dict1[i])
+    for i in list2:
+        x = x.replace(i, dict2[i])
+    return x
     pass
 
 
@@ -173,5 +355,10 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
+    b = 0
+    for i in range(len(lst)):
+        A = lst[i]
+        b = b + int(A[i]) + int(A[-i - 1])
+    return b
     pass
 
