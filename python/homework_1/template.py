@@ -36,7 +36,7 @@ def t3(dictionary):
     string = ''
     for item in items:
          string += str(item[0])+': '+str(item[1])+'; '
-    return string[:-1]
+    return string[:-2]
 
 
 def t4(string, sub_string):
