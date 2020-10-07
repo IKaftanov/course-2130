@@ -15,7 +15,7 @@ def t1(number):
     Пример: -5 -> 0
 
     """
-    pass
+    return (number+19)//20*20
 
 
 def t2(string):
@@ -24,7 +24,7 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
-    pass
+    return string[::-1]
 
 
 def t3(dictionary):
@@ -32,14 +32,17 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
-    pass
+    return str(dictionary)[1:-1].replace(',', ';').replace("'", "")
 
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
-    pass
+    if sub_string[::-1] in string:
+        return True
+    else:
+        return False
 
 
 def t5(strings):
@@ -47,7 +50,12 @@ def t5(strings):
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
-    pass
+    b = {}
+    for i in range(len(strings)):
+        s = strings[i].split(' ')
+        if int(s[3]) == int(s[0]) * int(s[1]) * int(s[2]):
+            b[i] = strings[i]
+    return list(b.values())
 
 
 def t6(string):
@@ -60,7 +68,12 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    pass
+    for j in string:
+        if j == '#':
+            string.find('#')
+            string = string[:string.find('#') - 1] + string[string.find('#') + 1:]
+    string = string.replace('#', '')
+    return string
 
 
 def t7(lst):
@@ -69,7 +82,19 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
-    pass
+    d = {}
+    i = 0
+    for j in lst:
+        if j in d:
+            d[j] += 1
+
+        else:
+            d[j] = 1
+    k = 0
+    for f in d.keys():
+        if d[f] < 2:
+            k += f
+    return k
 
 
 def t8(string):
@@ -78,7 +103,11 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
-    pass
+    import re
+    s = re.findall(r'\d+', string)
+    for i in range(len(s)):
+        s[i] = int(s[i])
+    return max(s)
 
 
 def t9(number):
@@ -87,7 +116,14 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
-    pass
+    if len(str(number)) < 5:
+        s = 5 - len(str(number))
+        return '0' * s + str(number)
+    #elif len(str(number)) > 5:
+       # s = len(str(number)) - 5
+       # return number / 10 ** s
+    else:
+        return str(number)
 
 
 def t10(string):
@@ -108,7 +144,18 @@ def t10(string):
            G  <-- вывод
 
     """
-    pass
+    mydict = {'GG': 'G', 'BG': 'R', 'GB': 'R', 'RG': 'B', 'GR': 'B', 'BR': 'G', 'RB': 'G', 'BB': 'B', 'RR': 'R'}
+    s = ''
+    for t in string:
+        s += t + ' '
+    s = s[:len(s) - 1].split(' ')
+    d = {}
+    while len(s) != 1:
+        for i in range(len(s) - 1):
+            d[i] = mydict.get(''.join([s[i], s[i + 1]]))
+        s = list(d.values())
+        d = {}
+    return s[0]
 
 
 def t11(lst):
@@ -119,7 +166,22 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
-    pass
+    s = lst[::-1]
+    d = {}
+    for i in range(1, len(lst) - 1):
+        x = 0
+        y = 0
+        for k in lst[:i]:
+            for t in lst[i + 1:]:
+                x += k
+                y += t
+                if x == y:
+                    d[i] = i
+
+    if d == {}:
+        return -1
+    else:
+        return list(d.values())[0]
 
 
 def t12(lst):
@@ -131,7 +193,26 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
-    pass
+    import re
+    s = {}
+    for i in range(len(lst)):
+        s[i] = re.findall(r'\d+', lst[i])
+    r = list(s.values())
+    t = {}
+    o = ''
+    for j in range(len(r)):
+        for i in r[j]:
+            o += i
+            t[j] = o
+        o = ''
+    v = {}
+    for m in range(len(list(t.values()))):
+        if list(t.values())[m][0] == '7':
+            v[m] = '8' + list(t.values())[m][1:]
+        else:
+            v[m] = list(t.values())[m]
+
+    return list(v.values())
 
 
 def t13(number_1, number_2):
@@ -141,7 +222,21 @@ def t13(number_1, number_2):
        +208
         4416
     """
-    pass
+
+    s = {}
+    f = {}
+    d = max(len(str(number_1)), len(str(number_2))) - min(len(str(number_1)), len(str(number_2)))
+    k = min(len(str(number_1)), len(str(number_2)))
+    for i in range(1, k + 1):
+        s[i] = (int(str(number_1)[-i]) + int(str(number_2)[-i]))
+        if len(str(number_1)) != len(str(number_2)):
+            for j in range(0, d):
+                if len(str(number_1)) > len(str(number_2)):
+                    f[j] = int(str(number_1)[j])
+                else:
+                    f[j] = int(str(number_2)[j])
+    return int(str(list(f.values())).replace('[', '').replace(']', '').replace(', ', '') + str(
+            list(s.values())[::-1]).replace('[', '').replace(']', '').replace(', ', ''))
 
 
 def t14(string):
@@ -161,7 +256,18 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
-    pass
+    mydict = {'1': 'One', '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five',
+            '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine', '10': 'Ten','+':   ' Plus ',  '-':   ' Minus ',
+          '*':   ' Times ',
+          '/':   ' Divided By ',
+          '**':  ' To The Power Of ',
+          '=':   ' Equals ', '!=':  ' Does Not Equal '}
+    f = ''
+    s = string.split(' ')
+    for i in s:
+        if i in mydict.keys():
+            f += mydict.get(i)
+    return f
 
 
 def t15(lst):
@@ -173,5 +279,20 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+    rows_a = len(lst)
+    cols_a = len(lst[0])
 
+    t = 0
+    k = 0
+    s = [[0 for row in range(cols_a)] for col in range(rows_a)]
+    for i in range(rows_a):
+        s[i] = lst[i][::-1]
+    if rows_a >= cols_a:
+        for i in range(cols_a):
+            t += lst[i][i]
+            k += lst[i][i]
+    else:
+        for j in range(rows_a):
+            t += lst[j][j]
+            k += s[j][j]
+    return t + k
