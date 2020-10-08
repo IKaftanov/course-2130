@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 WEATHER_CONVERSATION_COMMANDS = ['current', 'forecast']
 WEATHER_COMMAND_SELECTION = 0
 WEATHER_RETURN = 1
-
+location = None
 
 def start(update, context):
     """Send a message when the command /start is issued."""
@@ -35,16 +35,22 @@ def coordinates_handler(update, context):
     update.message.reply_text('Thank you. You location is captured', reply_markup=reply_markup)
     # find and save location property in update
     # you can use `context.user_data["location"]` to save user data
+    context.user_data["location"] = update.message.location
     return 1
 
 
 def weather_handler(update, context):
     if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
-        update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
+        message = weather_api.get_current_weather(lat=context.user_data['location']['latitude'],
+                                        lon=context.user_data['location']['longitude'])
+        update.message.reply_text(message, reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a current weather from yandex there
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
-        update.message.reply_text('forecast', reply_markup=telegram.ReplyKeyboardRemove())
+        message = weather_api.get_forecast(lat=context.user_data['location']['latitude'],
+                                                  lon=context.user_data['location']['longitude'])
+        update.message.reply_text(message, reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a forecast of weather from yandex there
+        #weather_api.get_forecast
     return ConversationHandler.END
 
 
