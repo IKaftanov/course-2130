@@ -39,8 +39,18 @@ def coordinates_handler(update, context):
 
 
 def weather_handler(update, context):
+#    if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
+#        update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
+            # TODO: send a current weather from yandex there
+    #lon = context.user_data["location"]['longitude']
+    #lat = context.user_data["location"]['latitude']
+    print(context)
+    lat = 55.75396
+    lon = 37.620393
     if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
         update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
+        weather = WeatherAPI(YANDEX_WEATHER_API_KEY).get_current_weather(lat=lat, lon=lon)
+        update.message.reply_text(str(weather))
         # TODO: send a current weather from yandex there
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
         update.message.reply_text('forecast', reply_markup=telegram.ReplyKeyboardRemove())

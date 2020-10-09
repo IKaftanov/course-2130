@@ -27,6 +27,7 @@ def t2(string):
     return " ".join([i[::-1] for i in string.split(' ')])
 
 
+
 def t3(dictionary):
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее

@@ -1,5 +1,5 @@
 import requests
-
+from tokens import YANDEX_WEATHER_API_KEY, TELEGRAM_KEY
 
 class WeatherAPI:
     # https://yandex.ru/dev/weather/doc/dg/concepts/forecast-test-docpage/#req-example
@@ -7,7 +7,8 @@ class WeatherAPI:
     api_url = 'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
 
     def __init__(self, api_key):
-        pass
+        self.url = 'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
+        self.key = api_key
 
     def get_current_weather(self, lat, lon):
         """
@@ -19,9 +20,18 @@ class WeatherAPI:
                 'temp': f'temp °C',
                 'wind_speed': f"{wind_speed} м/c"
             }
-
         """
-        pass
+        r = requests.get(self.url, data={"lat": lat, "lon": lon},
+                               headers={'X-Yandex-API-Key': self.key})
+        data = r.json()
+        result = {
+            "name": data['info']['tzinfo']['name'],
+            "current_time": data['now'],
+            "condition": data['fact']['condition'],
+            'temp': data['fact']['temp'],
+            'wind_speed': data['fact']['wind_speed']
+        }
+        return result
 
     def get_forecast(self, lat, lon):
         """
@@ -35,3 +45,5 @@ class WeatherAPI:
             }...]
         """
         pass
+#weather_api = WeatherAPI(YANDEX_WEATHER_API_KEY)
+#weather_api.get_current_weather(lat=55.75396, lon=37.620393)
