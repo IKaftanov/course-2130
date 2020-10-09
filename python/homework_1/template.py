@@ -20,7 +20,6 @@ def t1(number):
         return number
     else:
         return m
-    pass
 
 
 def t2(string):
@@ -30,7 +29,6 @@ def t2(string):
     Пример: `abc abc abc` -> `cba cba cba`
     """
     return ' '.join(word[::-1] for word in string.split(" "))
-    pass
 
 
 def t3(dictionary):
@@ -51,7 +49,6 @@ def t4(string, sub_string):
         return True
     else:
         return False
-    pass
 
 
 def t5(strings):
@@ -64,7 +61,6 @@ def t5(strings):
         if int(item[-1]) == int(item[0]) * int(item[2]) * int(item[4]):
             strings_filtered.append(item)
     return strings_filtered
-    pass
 
 def t6(string):
     """
@@ -97,7 +93,6 @@ def t7(lst):
         if lst.count(item) == 1:
             lst_uniq_sum += item
     return lst_uniq_sum
-    pass
 
 
 
@@ -111,7 +106,6 @@ def t8(string):
     reg = re.findall(r'\d+', string)
     m = max(list(map(int, reg)))
     return m
-    pass
 
 
 def t9(number):
@@ -126,7 +120,6 @@ def t9(number):
         return '0'*s + str(number)
     else:
         return str(number)
-    pass
 
 
 
@@ -163,7 +156,6 @@ def t10(string):
         string = f1(string)
 
     return string
-    pass
 
 
 def t11(lst):
@@ -201,7 +193,6 @@ def t12(lst):
         j = i.replace('+7', '8').replace(' ', '').replace(')', '').replace('(', '').replace('-', '')
         res.append(j)
     return res
-    pass
 
 
 def t13(number_1, number_2):
@@ -221,7 +212,6 @@ def t13(number_1, number_2):
     for i in range(len(n1)):
         n3 += str(int(n1[i]) + int(n2[i]))
     return int(n3)
-    pass
 
 
 def t14(string):
@@ -245,7 +235,6 @@ def t14(string):
     nums = {'0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine', '10': 'Ten'}
     exp = string.split()
     return nums.get(exp[0]) + ' ' + ops.get(exp[1]) + nums.get(exp[2])
-    pass
 
 
 def t15(lst):
@@ -262,4 +251,3 @@ def t15(lst):
         j = len(lst) - 1 - i
         s += lst[i][i] + lst[i][j]
     return s    
-    pass
