@@ -13,9 +13,12 @@ def t4(string, sub_string):
 def t5(strings):
     s = []
     for string in strings:
-        x, y, z = [int(i) for i in string.split()[:3]]
-        if f'{x} {y} {z} {x*y*z}' == string:
-            s.append(string)
+        try:
+            x, y, z = [int(i) for i in string.split()[:3]]
+            if (f'{x} {y} {z} {x*y*z}' == string)and(x>=0)and(y>=0)and(z>=0):      
+                s.append(string)
+        except:
+            continue
     return s
 
 def t6(string):
@@ -29,7 +32,7 @@ def t7(lst):
 	
 import re
 def t8(string):
-    return int(max(re.findall(r'\d+', string)))
+    return max(map(int,re.findall(r'\d+', string)))
 
 def t9(number):
     return f'{number:05d}'
