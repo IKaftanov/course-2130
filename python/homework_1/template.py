@@ -1,3 +1,4 @@
+
 """
     Ваша задача дописать функции, чтобы они проходили все тесты
 
@@ -10,11 +11,15 @@
 def t1(number):
     """
     Поправьте код что бы возвращаемое значение было ближайшим сверху, кратным к 20
-
+    
     Пример: number=21 тогда нужно вернуть 40
     Пример: -5 -> 0
-
     """
+    m = (number//20)*20 + 20
+    if number//20 == number/20:
+        return number
+    else:
+        return m
     pass
 
 
@@ -24,6 +29,7 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
+    return ' '.join(word[::-1] for word in string.split(" "))
     pass
 
 
@@ -32,13 +38,19 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
+    sd = str(dictionary)
+    return sd.replace('{', '').replace('}', '').replace(',', ';').replace("'", "")
     pass
-
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
+    rs = string[::-1]
+    if sub_string in rs:
+        return True
+    else:
+        return False
     pass
 
 
@@ -47,8 +59,12 @@ def t5(strings):
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
+    strings_filtered = []
+    for item in strings:
+        if int(item[-1]) == int(item[0]) * int(item[2]) * int(item[4]):
+            strings_filtered.append(item)
+    return strings_filtered
     pass
-
 
 def t6(string):
     """
@@ -60,6 +76,13 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
+    string_proc = ''
+    for elem in string:
+        if elem != '#':
+            string_proc += elem
+        else: 
+            string_proc = string_proc[:-1]
+    return string_proc
     pass
 
 
@@ -69,7 +92,13 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
+    lst_uniq_sum = 0 
+    for item in lst:
+        if lst.count(item) == 1:
+            lst_uniq_sum += item
+    return lst_uniq_sum
     pass
+
 
 
 def t8(string):
@@ -78,6 +107,10 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
+    import re
+    reg = re.findall(r'\d+', string)
+    m = max(list(map(int, reg)))
+    return m
     pass
 
 
@@ -87,7 +120,14 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
+    t = len(str(number))
+    s = 5 - t
+    if t < 5:
+        return '0'*s + str(number)
+    else:
+        return str(number)
     pass
+
 
 
 def t10(string):
@@ -108,6 +148,21 @@ def t10(string):
            G  <-- вывод
 
     """
+    def f1(string):
+        m = ''
+        colors = {'R', 'G', 'B'}
+        for i in range(len(string)-1):
+            x = {string[i], string[i+1]}
+            if len(x) == 2:
+                m += (colors - x).pop()
+            else:
+                m += x.pop()
+        return m
+
+    while len(string) > 1:
+        string = f1(string)
+
+    return string
     pass
 
 
@@ -119,8 +174,15 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
+    s = -1
+    for i in range(len(lst)):
+        sum_left = sum([int(j) for j in lst[:i]])
+        sum_right = sum([int(j) for j in lst[i+1:]])
+        if sum(lst[:i]) == sum(lst[i+1:]):
+            return i
+            s += i+1
+    return s
     pass
-
 
 def t12(lst):
     """
@@ -131,6 +193,14 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
+    import re
+    res = []
+    str_list = str(lst)
+    r = re.findall(r'(\+?\d[\( -]?\d{3}[\) -]?\d{3}[ -]?\d{2}[ -]?\d{2})', str_list)
+    for i in r:
+        j = i.replace('+7', '8').replace(' ', '').replace(')', '').replace('(', '').replace('-', '')
+        res.append(j)
+    return res
     pass
 
 
@@ -141,6 +211,16 @@ def t13(number_1, number_2):
        +208
         4416
     """
+    n1 = str(number_1)
+    n2 = str(number_2)
+    n3 = ''
+    if len(n1) < len(n2):
+        n1 = '0'*(len(n2) - len(n1)) + n1
+    else:
+        n2 = '0'*(len(n1) - len(n2)) + n2
+    for i in range(len(n1)):
+        n3 += str(int(n1[i]) + int(n2[i]))
+    return int(n3)
     pass
 
 
@@ -161,6 +241,10 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
+    ops = {'+':   'Plus ', '-':   'Minus ', '*':   'Times ', '/':   'Divided By ', '**':  'To The Power Of ', '=':   'Equals ', '!=':  'Does Not Equal '}
+    nums = {'0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine', '10': 'Ten'}
+    exp = string.split()
+    return nums.get(exp[0]) + ' ' + ops.get(exp[1]) + nums.get(exp[2])
     pass
 
 
@@ -173,5 +257,9 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
+    s = 0
+    for i in range(len(lst)):
+        j = len(lst) - 1 - i
+        s += lst[i][i] + lst[i][j]
+    return s    
     pass
-
