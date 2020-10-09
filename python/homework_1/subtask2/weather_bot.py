@@ -19,7 +19,7 @@ WEATHER_RETURN = 1
 def start(update, context):
     """Send a message when the command /start is issued."""
 
-    update.message.reply_text('Welcome to my weather API bot')
+    update.message.reply_text('Welcome to my weather API bot \nType /weather to know if it\'s good time to walk with your dog')
 
 
 def get_weather_start(update, context):
@@ -32,19 +32,29 @@ def coordinates_handler(update, context):
     reply_markup = telegram.ReplyKeyboardMarkup(
         [[telegram.KeyboardButton(item) for item in WEATHER_CONVERSATION_COMMANDS]]
     )
-    update.message.reply_text('Thank you. You location is captured', reply_markup=reply_markup)
+    update.message.reply_text('Thank you. Your location is captured', reply_markup=reply_markup)
     # find and save location property in update
     # you can use `context.user_data["location"]` to save user data
+    context.user_data["location"] = update.message.location
     return 1
 
 
 def weather_handler(update, context):
+    lon = context.user_data["location"]['longitude']
+    lat = context.user_data["location"]['latitude']
     if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
         update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a current weather from yandex there
+        weather_to_reply = WeatherAPI(YANDEX_WEATHER_API_KEY).get_current_weather(lat=lat, lon=lon)
+        update.message.reply_text('\n'.join([f'{key}: {value}' for (key, value) in weather_to_reply.items()]))
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
         update.message.reply_text('forecast', reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a forecast of weather from yandex there
+        weather_days = WeatherAPI(YANDEX_WEATHER_API_KEY).get_forecast(lat=lat, lon=lon)
+        weather_to_reply = []
+        for day in weather_days:
+            weather_to_reply.append(', '.join([f'{key}: {value}' for (key, value) in day.items()]))
+        update.message.reply_text('\n\n'.join(weather_to_reply))
     return ConversationHandler.END
 
 
