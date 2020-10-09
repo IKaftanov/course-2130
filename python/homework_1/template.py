@@ -8,6 +8,7 @@
 
 
 def t1(number):
+
     """
     Поправьте код что бы возвращаемое значение было ближайшим сверху, кратным к 20
 
@@ -15,7 +16,8 @@ def t1(number):
     Пример: -5 -> 0
 
     """
-    pass
+    return (number - number % 20) + 20
+
 
 
 def t2(string):
@@ -24,22 +26,31 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
-    pass
+    list0 = string.split()
+    list1 = ''
+    for i in list0:
+        list1 += i[::-1] + ' '
+    list1 = list1.strip()
+    return list1
 
-
+t2('dsf ecs ewd')
 def t3(dictionary):
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
-    pass
+    list0 =''
+    for key, value in dictionary.items():
+        point = key + ": " + str(value) + ';'
+        list0 += point
+    return list0
 
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
-    pass
+    return sub_string[::-1] in string
 
 
 def t5(strings):
@@ -60,7 +71,14 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    pass
+    list0 = ''
+    for i in string:
+        if i == '#':
+            list0 = list0[:-1]
+        else:
+            list0 += i
+    return list0
+
 
 
 def t7(lst):
@@ -69,16 +87,16 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
-    pass
-
+    return sum([i for i in lst if lst.count(i) == 1])
 
 def t8(string):
+    import re
     """
     Найдите все последовательности числев в строке и среди них найдите максимальное число
 
     gh12cdy695m1 -> 695
     """
-    pass
+    return max(map(int, re.findall('[0-9]+', string)))
 
 
 def t9(number):
@@ -87,28 +105,35 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
-    pass
+    return f'{number:05d}'
 
 
 def t10(string):
-    """
-    Произведите смешивание цветов. Вам будет дана строка, необходимо смешать все пары цветов и вернуть результируюший
-        цвет
-
-    Комбинации цветов:    G G     B G    R G   B R
-    Результирующий цвет:   G       R      B     G
-
-    R R G B R G B B  <- ввод
-     R B R G B R B
-      G G B R G G
-       G R G B G
-        B B R R
-         B G R
-          R B
-           G  <-- вывод
-
-    """
-    pass
+  
+    
+    
+    while len(string) > 1:
+        col = ['R','G','B']
+        string0 = []
+        for i in range(len(string)-1):
+            col1, col2 = string[i], string[i+1]
+            if col1 == col2:
+                string0.append(col1)
+            else:
+                col.remove(col1)
+                col.remove(col2)
+                string0.append(col)
+        return string0
+    return string0
+                
+t10('RG')        
+    
+col = ['R','G','B']
+col.remove('R')
+return col
+    while len(string) > 1:
+        if len(string) != 2:
+            list0 = {}
 
 
 def t11(lst):
@@ -119,7 +144,11 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
-    pass
+    for i in range(1, len(lst)-1):
+        if sum([int(x) for x in lst[:i]]) == sum([int(x) for x in lst[i+1:]]):
+            return i
+    return -1 
+       
 
 
 def t12(lst):
@@ -145,23 +174,24 @@ def t13(number_1, number_2):
 
 
 def t14(string):
-    """
-    Преобразуйте математическое выражение (символьное) в буквенное выраэение
+    
+    operator = {
+        '+':   'Plus ',
+        '-':   'Minus ',
+        '*':   'Times ',
+        '/':   'Divided By ',
+        '**':  'To The Power Of ',
+        '=':   'Equals ',
+        '!=':  'Does Not Equal '
+    }
+    number = [
+        'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+        'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+    ]
 
-    Для операций используйте следующую таблицу
-        { '+':   'Plus ',
-          '-':   'Minus ',
-          '*':   'Times ',
-          '/':   'Divided By ',
-          '**':  'To The Power Of ',
-          '=':   'Equals ',
-          '!=':  'Does Not Equal ' }
-    Примеры:
-        4 ** 9 -> Four To The Power Of Nine
-        10 - 5 -> Ten Minus Five
-        2 = 2  -> Two Equals Two
-    """
-    pass
+    left, op, right = string.split()
+
+    return f'{number[int(left)]} {operator[op]}{number[int(right)]}'
 
 
 def t15(lst):
@@ -173,5 +203,5 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+   return sum(lst[i][i] for i in range(len(lst))) + sum(lst[i][len(lst) - i - 1] for i in range(len(lst)))
 
