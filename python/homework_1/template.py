@@ -1,3 +1,4 @@
+import re
 """
     Ваша задача дописать функции, чтобы они проходили все тесты
 
@@ -15,6 +16,12 @@ def t1(number):
     Пример: -5 -> 0
 
     """
+    for i in range(20):
+        if number % 20 == 0:
+            return number
+        else:
+            number = number + 1
+        pass
     pass
 
 
@@ -24,6 +31,13 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
+    split = string.split()
+    reverse = []
+
+    for i in split:
+        reverse.append(str(i[::-1]))
+
+    return ' '.join(reverse)
     pass
 
 
@@ -32,6 +46,11 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
+    items = dictionary.items()
+    aux = []
+    for i in items:
+        aux.append(str(i[0]) + ': ' + str(i[1]))
+    return '; '.join(aux)
     pass
 
 
@@ -39,6 +58,10 @@ def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
+    if sub_string[::-1] in string:
+        return True
+    else:
+        return False
     pass
 
 
@@ -47,6 +70,10 @@ def t5(strings):
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
+    regex = re.compile(r'^\[1-9]+\s\[1-9]+\s\[1-9]+\s\[1-9]+\*\[1-9]+\*\[1-9]+$')
+    filtered = [*filter(regex.match, strings)]
+
+    return filtered
     pass
 
 
@@ -60,6 +87,13 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
+    newstring = ''
+    for i in range(len(string)):
+        if string[i] != '#':
+            newstring = newstring + string[i]
+        else:
+            newstring = newstring[:-1]
+    return newstring
     pass
 
 
@@ -69,6 +103,15 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
+    unique_vals = []
+
+    for i in set(lst):
+        if lst.count(i) == 1:
+            unique_vals.append(i)
+        else:
+            pass
+
+    return sum(unique_vals)
     pass
 
 
@@ -78,6 +121,9 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
+    num = re.findall(r'\d+', string)
+    num = map(int, num)
+    return max(num)
     pass
 
 
@@ -87,6 +133,9 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
+    lenght = len(str(abs(number)))
+    zeros = (5 - lenght) * '0'
+    return zeros + str(number)
     pass
 
 
@@ -108,6 +157,34 @@ def t10(string):
            G  <-- вывод
 
     """
+    def colorsum(color1, color2):
+        if color1 == color2:
+            return color1
+        elif color1 == 'G':
+            if color2 == 'B':
+                return 'R'
+            else:
+                return 'B'
+        elif color1 == 'B':
+            if color2 == 'G':
+                return 'R'
+            else:
+                return 'G'
+        else:
+            if color2 == 'G':
+                return 'B'
+            else:
+                return 'G'
+        pass
+    split = string
+
+    sumcols = ''
+    while len(split) > 1:
+        for i in range(len(split)-1):
+            sumcols = sumcols + colorsum(split[i], split[i+1])
+        split = sumcols
+        sumcols = ''
+    return ' '.join(split)
     pass
 
 
@@ -119,6 +196,14 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
+    index = -1
+    for i in range(len(lst)):
+        if sum(lst[0:i]) == sum(lst[i+1:]):
+            index = index + 1 + i
+            break
+        else:
+            pass
+    return index
     pass
 
 
@@ -131,6 +216,7 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
+
     pass
 
 
@@ -141,6 +227,26 @@ def t13(number_1, number_2):
        +208
         4416
     """
+    len_1 = len(str(number_1))
+    len_2 = len(str(number_2))
+    summed = []
+
+    if len_1 == len_2:
+        for i in range(len_1):
+            summed.append(str(int(str(number_1)[i]) + int(str(number_2)[i])))
+        return int(''.join(summed))
+    elif len_1 > len_2:
+        diff = len_1 - len_2
+        number_2 = number_2 * 10**diff
+        for i in range(len_1):
+            summed.append(str(int(str(number_1)[i]) + int(str(number_2)[i])))
+        return int(''.join(summed))
+    else:
+        diff = len_2 - len_1
+        number_1 = number_1 * 10**diff
+        for i in range(len_2):
+            summed.append(str(int(str(number_1)[i]) + int(str(number_2)[i])))
+        return int(''.join(summed))
     pass
 
 
@@ -161,6 +267,28 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
+    math_dict = {'+':   ' Plus ',
+                 '-':   ' Minus ',
+                 '*':   ' Times ',
+                 '/':   ' Divided By ',
+                 '**':  ' To The Power Of ',
+                 '=':   ' Equals ',
+                 '!=':  ' Does Not Equal ',
+                 '1': 'One', '2': 'Two',
+                 '3': 'Three',
+                 '4': 'Four',
+                 '5': 'Five',
+                 '6': 'Six',
+                 '7': 'Seven',
+                 '8': 'Eight',
+                 '9': 'Nine',
+                 '10': 'Ten'}
+
+    newstring = ''
+    string = string.split()
+    for i in range(len(string)):
+        newstring = newstring + math_dict[string[i]]
+    return newstring
     pass
 
 
@@ -173,5 +301,15 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+    size = len(lst[0])
+    if size == 1:
+        return lst[0][0]*2
 
+    diag_sum = 0
+
+    for i in range(size):
+        diag_sum += lst[i][i]
+
+        diag_sum += lst[i][size-i-1]
+    return diag_sum
+    pass
