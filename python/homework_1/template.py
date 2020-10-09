@@ -42,7 +42,7 @@ def t5(strings):
 
 
 def t6(string):
-       while string.find("#")!=-1:
+    while string.find("#")!=-1:
         if string.find("#")==0 : string = string[string.find("#")+1:]
         else: string = string[:(string.find("#")-1)]+string[(string.find("#")+1):]
     return string
