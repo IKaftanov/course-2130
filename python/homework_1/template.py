@@ -80,17 +80,28 @@ def t8(string):
 
 
 def t9(number):
-    if len(str(num))>4: return str(num)
-    else: return str(num).replace(str(num),(5-len(str(num)))*'0'+str(num))
+    if len(str(number))>4: return str(number)
+    else: return str(number).replace(str(number),(5-len(str(number)))*'0'+str(number))
 
     pass
 
 def t10(string):
-    while len(string)>1:
-            string = string.split(' ')
-            string = ' '.join([string[i]+string[i+1] for i in range(len(string)-1)])
-            string = string.replace('GG','G').replace('RR','R').replace('BB','B').replace('GB','R').replace('BG','R').replace('RB','G').replace('BR','G').replace('GR','B').replace('RG','B')
-    else: return string
+    b = list(string)
+    c=len(b)
+    if c==1:
+        return ''.join(b)
+    for i in range(c):
+        d=len(b)
+        for j in range(d-1):
+            if (b[j]=='B' and b[j+1]=='R') or (b[j+1]=='B' and b[j]=='R'):
+                b[j]='G'
+            elif (b[j]=='R' and b[j+1]=='G') or (b[j+1]=='R' and b[j]=='G'):
+                b[j]='B'
+            elif (b[j]=='G' and b[j+1]=='B') or (b[j+1]=='G' and b[j]=='B'):
+                b[j]='R'
+        if len(b)>1: b=b[0:-1:]
+        else: return ''.join(b)
+    return ''.join(b)
     """
     Произведите смешивание цветов. Вам будет дана строка, необходимо смешать все пары цветов и вернуть результируюший
         цвет
@@ -114,8 +125,10 @@ def t10(string):
 def t11(lst):
     l = []
     for i in range(1,len(lst)-1):
-        if lst[i-1]==lst[i+1]: l.append(i)
+        if sum(lst[:i])==sum(lst[i+1:]): l.append(i)
         else: i+1
+    if l==[]: l.append(-1)
+    else:l
     return min(l)
     """
     Вам дам список из целых чисел. Найдите индекс числа такого, что левая и правая части списка от него равны
@@ -127,9 +140,22 @@ def t11(lst):
     pass
 
 
+import re
 def t12(lst):
-    n = lst
-    return lst
+    b=[]
+    for i in range(len(lst)):
+        a=''.join(re.findall(r'\+?\d[\( -]?\d{3}[\) -]?\d{3}[ -]?\d{2}[ -]?\d{2}',lst[i]))
+        a=a.replace(' ','')
+        a=a.replace("-","")
+        a=a.replace("+","")
+        a=a.replace(")","")
+        a=a.replace("(","")
+        if len(a)==11:
+            a='8'+a[1:
+        else: a='8'+a
+        b.append(a)
+    return b
+
     """
     На вход подается список строк вида `Что-то происходит бла бла бла +7495 123-45-67` содержащие номер телефона.
         Используя regex выражения запишите всевозможноые комбинации телефонов, например программа должна корректно
@@ -148,7 +174,7 @@ def t13(number_1, number_2):
         new.append(str(int(str(number_1)[-i-1])+ int(str(number_2)[-i-1])))
     new = new[::-1]  
     new = j + ''.join(new)
-    return new
+    return int(new)
     """
     Сложите два числа по элементно:
         248
