@@ -99,11 +99,7 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
-    if len(str(number)) <= 5:
-        return '0' * (5 - len(str(number))) + str(number)
-    else:
-        return str(number)
-
+    return f'{number:05}'
 
 def t10(string):
     """
@@ -225,8 +221,7 @@ def t14(string):
 
 def t15(lst):
     """
-    Найдите сумму элементов на диагонали 
-    тогда уж диагоналЯХ -- главной и побочной
+    Найдите сумму элементов на диагоналях
 
     [[ 1, 2, 3 ],
     [ 4, 5, 6 ],

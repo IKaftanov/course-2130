@@ -35,8 +35,6 @@ def coordinates_handler(update, context):
     # find and save location property in update
     # you can use `context.user_data["location"]` to save user data
     context.user_data["location"] = update.message.location
-#    logger.info("Location: %f / %f", user_location.latitude,
-#                user_location.longitude)
     return 1
 
 
