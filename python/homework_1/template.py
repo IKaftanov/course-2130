@@ -89,7 +89,22 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
-    pass
+    nums = []
+    i = 0
+    while i < len(string):
+        snum = ""
+        a = string[i]
+        while "0" <= a <= "9":
+            snum += a
+            i += 1
+            if i < len(string):
+                a = string[i]
+            else:
+                break
+        i += 1
+        if snum != "":
+            nums.append(int(snum))
+    return max(nums)
 
 
 def t9(number):
@@ -119,21 +134,29 @@ def t10(string):
            G  <-- вывод
 
     """
-    # colors = {"GG" : "G",
-    #           "BG" : "R",
-    #           "GB" : "R",
-    #           "RG" : "B",
-    #           "GR" : "B",
-    #           "BR" : "G",
-    #           "RB" : "G",
-    #           "RR" : "R",
-    #           "BB" : "B"}
+    colors = {"GG": "G",
+              "BG": "R",
+              "GB": "R",
+              "RG": "B",
+              "GR": "B",
+              "BR": "G",
+              "RB": "G",
+              "RR": "R",
+              "BB": "B"}
     #
     # while len(string) != 1:
     #     for i in colors.keys():
     #         string = string.replace(i, colors[i])
     # return string
-    pass
+    while len(string) != 1:
+        for i in range(len(string)-1):
+            if i == len(string)-1:
+                continue
+            key = string[i] + string[i+1]
+            string = string[:i] + colors[key] + string[i+1:]
+        string = string[:len(string)-1]
+    return string
+
 
 def t11(lst):
     """
@@ -167,7 +190,21 @@ def t13(number_1, number_2):
        +208
         4416
     """
-    pass
+    rank = 1
+    res = 0
+    while number_1 > 0 or number_2 > 0:
+        a = number_1 % 10
+        b = number_2 % 10
+        c = a + b
+        res += rank * c
+        if c // 10 == 0:
+            rank *= 10
+        else:
+            rank *= 100
+        number_1 = number_1 // 10
+        number_2 = number_2 // 10
+
+    return res
 
 
 def t14(string):
@@ -187,7 +224,29 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
-    pass
+    dictionary = {'+': 'Plus',
+     '-': 'Minus',
+     '**': 'To The Power Of',
+     '*': 'Times',
+     '/': 'Divided By',
+     '!=': 'Does Not Equal',
+     '=': 'Equals ',
+     '10': 'Ten',
+     '0': 'Zero',
+     '1': 'One',
+     '2': 'Two',
+     '3': 'Three',
+     '4': 'Four',
+     '5': 'Five',
+     '6': 'Six',
+     '7': 'Seven',
+     '8': 'Eight',
+     '9': 'Nine'
+     }
+
+    for i in dictionary.keys():
+        string = string.replace(i, dictionary[i])
+    return string
 
 
 def t15(lst):
@@ -199,5 +258,9 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+    n = len(lst)
+    diagsum = 0
+    for i in range(n):
+        diagsum += lst[i][i] + lst[n-i-1][n-i-1]
+    return diagsum
 
