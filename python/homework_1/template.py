@@ -21,7 +21,7 @@ def t1(number):
     else:
         return x // 20 * 20 + 20
 
-    pass
+
 
 
 def t2(string):
@@ -31,19 +31,16 @@ def t2(string):
     Пример: `abc abc abc` -> `cba cba cba`
     """
 
-    def reverse_word(x):
-        return x[::-1]
-
     x = string.split()
     list = []
     r = ""
     for i in x:
-        res = reverse_word(i)
+        res = i[::-1]
         list.append(res)
         r = " ".join(list)
     return r
 
-    pass
+
 
 def t3(dictionary):
     """
@@ -57,7 +54,7 @@ def t3(dictionary):
         list.append(res)
         r = "; ".join(list)
     return r
-    pass
+
 
 
 def t4(string, sub_string):
@@ -72,7 +69,7 @@ def t4(string, sub_string):
     else:
         res = False
     return res
-    pass
+
 
 
 def t5(strings):
@@ -81,16 +78,18 @@ def t5(strings):
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
     l = []
-    for i in strings:
-        x = i.split(" ")
-        a = int(x[0])
-        b = int(x[1])
-        c = int(x[2])
-        d = int(x[3])
-        if d == a * b * c:
-            l.append(i)
+    try:
+        for i in strings:
+            x = i.split(" ")
+            a = int(x[0])
+            b = int(x[1])
+            c = int(x[2])
+            d = int(x[3])
+            if d == a * b * c:
+                l.append(i)
+    except ValueError:
+        pass
     return l
-    pass
 
 
 def t6(string):
@@ -113,7 +112,7 @@ def t6(string):
         else:
             s1.append(i)
     return ''.join(s1)
-    pass
+
 
 def t7(lst):
     """
@@ -136,7 +135,7 @@ def t7(lst):
         return t - a
     except ValueError:
         return 0
-    pass
+
 
 
 def t8(string):
@@ -154,12 +153,11 @@ def t8(string):
             a = a * 10 + int(x[i])
         except ValueError:
             a = 0
-            l.append(a)
         l.append(a)
         i += 1
     out = max(l)
     return out
-    pass
+
 
 
 def t9(number):
@@ -182,7 +180,7 @@ def t9(number):
     else:
         out = str(number)
     return out
-    pass
+
 
 
 def t10(string):
@@ -203,25 +201,25 @@ def t10(string):
            G  <-- вывод
 
     """
-    x = string
-    s = {"B", "G", "R"}
-    i = 0
-    if len(x) == 1:
-        a = x[0]
-    else:
+
+    def color(x):
+        s = ["B", "G", "R"]
+        i = 0
+        result = ""
         while i < len(x) - 1:
             if x[i] == x[i + 1]:
-                a = x[i]
+                result = result + x[i]
             else:
                 s.remove(x[i])
                 s.remove(x[i + 1])
-                a = "".join(s)
+                result = result + s[0]
             i += 1
-            s = {"B", "G", "R"}
+            s = ["B", "G", "R"]
+        return result
 
-    return a
-    pass
-
+    while len(string) > 1:
+        string = color(string)
+    return string
 
 def t11(lst):
     """
@@ -251,7 +249,7 @@ def t11(lst):
     if a == 0:
         return -1
 
-    pass
+
 
 
 def t12(lst):
@@ -274,7 +272,7 @@ def t12(lst):
         list.append(X2)
 
     return list
-    pass
+
 
 
 def t13(number_1, number_2):
@@ -305,7 +303,6 @@ def t13(number_1, number_2):
         x = xi + x
         i += 1
     return int(x)
-    pass
 
 
 def t14(string):
@@ -343,8 +340,6 @@ def t14(string):
     for i in list2:
         x = x.replace(i, dict2[i])
     return x
-    pass
-
 
 def t15(lst):
     """
@@ -357,8 +352,6 @@ def t15(lst):
     """
     b = 0
     for i in range(len(lst)):
-        A = lst[i]
-        b = b + int(A[i]) + int(A[-i - 1])
+        b = b + int(lst[i][i]) + int(lst[i][-i - 1])
     return b
-    pass
 
