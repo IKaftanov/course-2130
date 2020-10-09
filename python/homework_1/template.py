@@ -29,15 +29,7 @@ def t3(dictionary):
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
     """
-    string = ''
-    keys = list(dictionary.keys())
-    values = list(dictionary.values())
-    for i in range(len(keys)):
-        if i < len(keys) -1:
-            string += str(keys[i]) + ': ' + str(values[i]) + ';'
-        else:
-            string += str(keys[i]) + ': ' + str(values[i])
-    return str(dictionary)
+    return '; '.join(f'{key}: {value}' for key, value in dictionary.items())
 
 def t4(string, sub_string):
     """
@@ -195,14 +187,14 @@ def t12(lst):
     Выход: [`84951234567`]
     """
     import re
-    numbers = re.findall(r'\+?\d[\( -]?\d{3}[\) -]?\d{3}[ -]?\d{2}[ -]?\d{2}',lst)
-    for i in range(len(numbers)):
-        numbers[i] = numbers[i].replace('+7','8')
-        numbers[i] = numbers[i].replace(' ','')
-        numbers[i] = numbers[i].replace('-','')
-        numbers[i] = numbers[i].replace('(','')
-        numbers[i] = numbers[i].replace(')','')
-    return str(numbers)    
+    numbers = []
+    numbers_upd = []
+    for i in lst:
+        numbers += re.findall(r'[\+]?[78]?[\s(-]?\d{3}[\s' ')-]?\d{3}[\s' ')-]?[\s]?\d{2}[' ')-]?\d{2}[' ')-]?', i)
+    for j in numbers:
+        j = j.replace('+7', '8').replace('-', '').replace(' ', '').replace('(', '').replace(')', '')
+        numbers_upd += [j]
+    return numbers_upd  
 
 
 def t13(number_1, number_2):
