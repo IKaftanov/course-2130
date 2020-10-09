@@ -151,7 +151,7 @@ def t12(lst):
         a=a.replace(")","")
         a=a.replace("(","")
         if len(a)==11:
-            a='8'+a[1:
+            a='8'+a[1::]
         else: a='8'+a
         b.append(a)
     return b
