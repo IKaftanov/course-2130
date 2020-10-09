@@ -53,9 +53,7 @@ Current weather for {name}, time: {current_time}:
 Condition: {condition}
 Temperature: {temp} °C
 Wind speed: {wind_speed} m/s
-        '''.strip().format(**reply),
-        reply_markup=telegram.ReplyKeyboardRemove()
-        )
+        '''.strip().format(**reply))
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
         loc = context.user_data['location']
         reply = weather_api.get_forecast(loc['latitude'], loc['longitude'])
@@ -69,7 +67,7 @@ Day {day}:
     Sunset at {sunset}
             '''.strip().format(**day))
 
-        update.message.reply_text("That's it", reply_markup=telegram.ReplyKeyboardRemove())
+    update.message.reply_text("This is it!", reply_markup=telegram.ReplyKeyboardRemove())
 
     return ConversationHandler.END
 
