@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[32]:
+
+
 """
     Ваша задача дописать функции, чтобы они проходили все тесты
 
@@ -5,6 +11,9 @@
 
     Разрешается использовать только стандартные библиотеки языка.
 """
+
+
+# In[90]:
 
 
 def t1(number):
@@ -15,7 +24,11 @@ def t1(number):
     Пример: -5 -> 0
 
     """
+    return((number - 1) // 20 * 20 + 20)
     pass
+
+
+# In[103]:
 
 
 def t2(string):
@@ -24,7 +37,20 @@ def t2(string):
 
     Пример: `abc abc abc` -> `cba cba cba`
     """
+    arr = string.split(' ')
+    n = len(arr)
+    i = 0
+    s = ""
+    for a in arr:
+        i = i + 1
+        s = s + str(a[::-1])
+        if i != n:
+            s = s + " "
+    return(s)
     pass
+
+
+# In[79]:
 
 
 def t3(dictionary):
@@ -32,14 +58,30 @@ def t3(dictionary):
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
     """
+    n = len(dictionary)
+    i = 0
+    s = ""
+    for k, v in dictionary.items():
+        i = i + 1
+        s = s + str(k) + ": " + str(v)
+        if i != n:
+            s = s + "; "
+    return(s)
     pass
+
+
+# In[106]:
 
 
 def t4(string, sub_string):
     """
     проверить есть ли в строке инвертированная подстрока
     """
+    return(sub_string[::-1] in string)
     pass
+
+
+# In[114]:
 
 
 def t5(strings):
@@ -47,7 +89,16 @@ def t5(strings):
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
+    r = []
+    for string in strings:
+        a = string.split(' ')
+        if int(a[0]) * int(a[1]) * int(a[2]) == int(a[3]):
+            r.append(string)
+    return(r)
     pass
+
+
+# In[142]:
 
 
 def t6(string):
@@ -60,7 +111,23 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
+    a = [1 for i in range(len(string))]
+    for i in range(len(string)):
+        if string[i] == '#':
+            a[i] = 0
+            j = i
+            while (a[j] != 1) and (j != 0):
+                j = j - 1
+            a[j] = 0
+    s = ""
+    for i in range(len(string)):
+        if a[i] == 1:
+            s = s + string[i]
+    return(s)
     pass
+
+
+# In[178]:
 
 
 def t7(lst):
@@ -69,7 +136,21 @@ def t7(lst):
 
     Например: [4,5,7,5,4,8] -> 15 потому что 7 и 8 уникальны
     """
+    d = {}
+    for i in lst:
+        if i in d.keys():
+            d[i] += 1
+        else:
+            d[i] = 1
+    uniq = [i for i in d.keys() if d[i] == 1]
+    s = 0
+    for el in uniq:
+        s = s + el
+    return(s)
     pass
+
+
+# In[182]:
 
 
 def t8(string):
@@ -78,7 +159,22 @@ def t8(string):
 
     gh12cdy695m1 -> 695
     """
+    n = 0
+    maxn = 0
+    for i in range(len(string)):
+        if string[i].isdigit():
+            n = n * 10 + int(string[i])
+        else:
+            if n > maxn:
+                maxn = n
+            n = 0
+    if n > maxn:
+        maxn = n
+    return(maxn)
     pass
+
+
+# In[185]:
 
 
 def t9(number):
@@ -87,7 +183,15 @@ def t9(number):
 
     Т.е. для числа 5 верните `00005`
     """
+    s = str(number)
+    n = ""
+    for i in range(5 - len(s)):
+        n = n + "0"
+    return(n + s)
     pass
+
+
+# In[208]:
 
 
 def t10(string):
@@ -108,7 +212,31 @@ def t10(string):
            G  <-- вывод
 
     """
+    n = len(string)
+    a = [[0] * n for i in range(n)]
+    for i in range(n):
+        if string[i] == "R":
+            a[0][i] = 1
+        if string[i] == "G":
+            a[0][i] = 2
+        if string[i] == "B":
+            a[0][i] = 3
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if a[i][j] != a[i][j + 1]:
+                a[i + 1][j] = 6 - a[i][j] - a[i][j + 1]
+            else:
+                a[i + 1][j] = a[i][j]
+    if a[n - 1][0] == 1:
+        return("R")
+    if a[n - 1][0] == 2:
+        return("G")
+    if a[n - 1][0] == 3:
+        return("B")
     pass
+
+
+# In[215]:
 
 
 def t11(lst):
@@ -119,7 +247,21 @@ def t11(lst):
     [1,12,3,3,6,3,1] = 2
     [10,20,30,40] = -1
     """
+    s = 0
+    for el in lst:
+        s = s + el
+    sl = lst[0]
+    ind = -1
+    for i in range(1, len(lst) - 1):
+        if sl == s - sl - lst[i]:
+            ind = i
+            break
+        sl = sl + lst[i]
+    return(ind)
     pass
+
+
+# In[291]:
 
 
 def t12(lst):
@@ -131,7 +273,32 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
+    import re
+    pattern = r'(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){11}(\s*)?'
+    delpr = "^\s+|\n|\r|\s+$"
+    a = []
+    for el in lst:
+        res = re.search(pattern, el)
+        res.group()
+        s = res[0]
+        s = re.sub(delpr, '', s)
+        i = 1
+        if s[0] == '+':
+            while s[i] != "7":
+                i += 1
+            i += 1
+        ns = "8"
+        while i < len(s):
+            if s[i].isdigit():
+                ns = ns + s[i]
+            i += 1
+        a.append(ns)
+    return(a)
     pass
+t12(["Что-то происходит бла бла бла +7495 123-45-67", "Звони 8 495 123-45-67 мне", "По вопросам рекламы +7(499)123-45-67"])
+
+
+# In[232]:
 
 
 def t13(number_1, number_2):
@@ -141,7 +308,18 @@ def t13(number_1, number_2):
        +208
         4416
     """
+    s = ""
+    n1 = len(str(number_1))
+    n2 = len(str(number_2))
+    for i in range(max(n1, n2)):
+        s = str(number_1 % 10 + number_2 % 10) + s
+        number_1 //= 10
+        number_2 //= 10
+    return(int(s))
     pass
+
+
+# In[242]:
 
 
 def t14(string):
@@ -161,7 +339,35 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
+    d = { '0':   'Zero ',
+          '1':   'One ',
+          '2':   'Two ',
+          '3':   'Three ',
+          '4':   'Four ',
+          '5':   'Five ',
+          '6':   'Six ',
+          '7':   'Seven ',
+          '8':   'Eight ',
+          '9':   'Nine ',
+          '10':   'Ten ',
+          '+':   'Plus ',
+          '-':   'Minus ',
+          '*':   'Times ',
+          '/':   'Divided By ',
+          '**':  'To The Power Of ',
+          '=':   'Equals ',
+          '!=':  'Does Not Equal ' }
+    s = string.split(" ")
+    ns = ""
+    for el in s:
+        ns = ns + d[el]
+    if ns[len(ns) - 1] == " ":
+        ns = ns[:len(ns) - 1]
+    return(ns)
     pass
+
+
+# In[219]:
 
 
 def t15(lst):
@@ -173,5 +379,9 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
+    s = 0
+    for i in range(len(lst)):
+        s = s + lst[i][i] + lst[i][len(lst[i]) - 1 - i]
+    return(s)
     pass
 
