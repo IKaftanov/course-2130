@@ -48,7 +48,7 @@ def t1(number):
     a = int(number)
     b = (1 + a // 20) * 20
     return b
-    pass
+   
 
 
 def t2(string):
@@ -59,7 +59,7 @@ def t2(string):
         return '""'
     else:
         return str(c)
-    pass
+  
 
 def t3(dictionary):
     if dictionary=={}:
@@ -70,7 +70,7 @@ def t3(dictionary):
         list1.append(res)
         r = "; ".join(list1)
     return r
-    pass
+   
 
 def t4(string, sub_string):
     s = string
@@ -78,8 +78,7 @@ def t4(string, sub_string):
     t = t[::-1]
     result = t in s
     return result
-    pass
-
+   
 
 def t5(strings):
     l = []
@@ -92,7 +91,7 @@ def t5(strings):
         if d == a * b * c:
             l.append(i)
     return l
-    pass
+   
 
 
 def t6(string):
@@ -115,8 +114,7 @@ def t6(string):
         return '""'
     else:
         return b
-    pass
-
+    
     
 def t7(lst):
     arr = lst
@@ -135,7 +133,7 @@ def t7(lst):
     k = list(a.keys())
     s = sum(k)
     return s
-    pass
+   
 
 
 def t8(string):
@@ -144,7 +142,6 @@ def t8(string):
     listOfNumbers = [float(i) for i in newstr.split()]
     maxs = int(max(listOfNumbers))
     return maxs
-    pass
 
 
 def t9(number):
@@ -152,8 +149,7 @@ def t9(number):
     num1 = int(num1)
     fnum1 = "{:0>5d}".format(num1)
     return str(fnum1)
-    pass
-
+  
 
 def t10(string):
    
@@ -174,7 +170,7 @@ def t10(string):
             s = {"B", "G", "R"}
 
     return a
-    pass
+  
 
 
 def t11(lst):
@@ -191,7 +187,7 @@ def t11(lst):
             else:
                 return -1
 
-    pass
+ 
 
 
 def t12(lst):
@@ -203,7 +199,7 @@ def t12(lst):
     a = [a[i:i + 11] for i in range(0, len(s), 11)]
     a = filter(None, a)
     return a
-    pass
+
 
 
 def t13(number_1, number_2):
@@ -227,7 +223,7 @@ def t13(number_1, number_2):
     d = list(reversed(d))
     e = int(str(d).replace("[", "").replace("]", "").replace(",", "").replace(" ", ""))
     return e
-    pass
+   
 
 
 def t14(string):
@@ -253,7 +249,7 @@ def t14(string):
     for i in l:
         s = s.replace(i, d[i])
     return s
-    pass
+    
 
 
 def t15(lst):
@@ -279,6 +275,6 @@ def t15(lst):
                 num2 += b
     num0 = num1 + num2
     return num0
-    pass
+    
 
 
