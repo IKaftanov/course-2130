@@ -79,8 +79,6 @@ def t6(string):
         else: 
             string_proc = string_proc[:-1]
     return string_proc
-    pass
-
 
 def t7(lst):
     """
@@ -93,7 +91,6 @@ def t7(lst):
         if lst.count(item) == 1:
             lst_uniq_sum += item
     return lst_uniq_sum
-
 
 
 def t8(string):
@@ -120,7 +117,6 @@ def t9(number):
         return '0'*s + str(number)
     else:
         return str(number)
-
 
 
 def t10(string):
@@ -157,7 +153,6 @@ def t10(string):
 
     return string
 
-
 def t11(lst):
     """
     Вам дам список из целых чисел. Найдите индекс числа такого, что левая и правая части списка от него равны
@@ -174,7 +169,6 @@ def t11(lst):
             return i
             s += i+1
     return s
-    pass
 
 def t12(lst):
     """
