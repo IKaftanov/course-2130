@@ -71,7 +71,6 @@ def t6(string):
        while string.find("#")!=-1:
         if string.find("#")==0 : string = string[string.find("#")+1:]
         else: string = string[:(string.find("#")-1)]+string[(string.find("#")+1):]
-    else: string
     return string
     """
     Предположим у вас есть строки содержащие `#` символ, который означает backspace (удаление предыдущего) обработаете
