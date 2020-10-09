@@ -158,9 +158,9 @@ def t13(number_1, number_2):
     pass
 
 
+
 def t14(string):
-    def t14(string): 
-    symb={ '+': 'Plus ', '-': 'Minus ', '*': 'Times ', '/': 'Divided By ', '**': 'To The Power Of ', '=': 'Equals ', '!=': 'Does Not Equal ' } 
+    symb={'+': 'Plus ', '-': 'Minus ', '*': 'Times ', '/': 'Divided By ', '**': 'To The Power Of ', '=': 'Equals ', '!=': 'Does Not Equal ' }
     num={'10': 'Ten ', '9': 'Nine ','8': 'Eight ','7': 'Seven ','6': 'Six ','5': 'Five ','4': 'Four ','3': 'Three ','2': 'Two ','1': 'One ', '0': 'Zero '} 
     symb.update(num) 
     c=string.split() 
