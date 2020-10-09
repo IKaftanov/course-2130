@@ -8,6 +8,9 @@
 
 
 def t1(number):
+    if number%20 == 0 : new = number
+    else: new = (number//20+1)*20 
+    return new
     """
     Поправьте код что бы возвращаемое значение было ближайшим сверху, кратным к 20
 
@@ -19,6 +22,8 @@ def t1(number):
 
 
 def t2(string):
+    new = ' '.join(i[::-1] for i in string.split(' '))
+    return new
     """
     На вход подается набор слов разделенных пробелом, инвертируйте каждое слово.
 
@@ -28,6 +33,8 @@ def t2(string):
 
 
 def t3(dictionary):
+    new = '; '.join([f'{key}: {value}' for key, value in dictionary.items()])
+    return new
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
@@ -36,6 +43,9 @@ def t3(dictionary):
 
 
 def t4(string, sub_string):
+    if string.find(sub_string[::-1])==-1: new = False 
+    else: new = True 
+    return new
     """
     проверить есть ли в строке инвертированная подстрока
     """
@@ -43,6 +53,13 @@ def t4(string, sub_string):
 
 
 def t5(strings):
+    new = []
+    for i in range(len(strings)):
+        if strings[i].replace(' ', '').isdigit() == 1: 
+            k= [int(j) for j in strings[i].split(" ")]
+            if k[3]==k[0]*k[1]*k[2] and len(k)==4: new.append(strings[i])
+            else: i=i+1
+    return new
     """
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
@@ -51,6 +68,11 @@ def t5(strings):
 
 
 def t6(string):
+       while string.find("#")!=-1:
+        if string.find("#")==0 : string = string[string.find("#")+1:]
+        else: string = string[:(string.find("#")-1)]+string[(string.find("#")+1):]
+    else: string
+    return string
     """
     Предположим у вас есть строки содержащие `#` символ, который означает backspace (удаление предыдущего) обработаете
         такие строки
@@ -64,6 +86,14 @@ def t6(string):
 
 
 def t7(lst):
+    new = []
+    for i in range(len(lst)):
+        for j in range(len(lst)):
+            if i != j and lst[i] == lst[j]:
+                break
+        else: new.append(lst[i])
+    return sum(new)
+    
     """
     На вход подается список элементов, найдите сумму уникальных элементов списка.
 
@@ -73,6 +103,17 @@ def t7(lst):
 
 
 def t8(string):
+    new=[] 
+    num='' 
+    for i in range(len(string)): 
+        if string[i].isdigit()==1: num=num+string[i] 
+        else: 
+            if num!='': 
+                new.append(int(num)) 
+                num='' 
+    if num!='': 
+        new.append(int(num)) 
+    return max(new)
     """
     Найдите все последовательности числев в строке и среди них найдите максимальное число
 
@@ -82,6 +123,8 @@ def t8(string):
 
 
 def t9(number):
+    if len(str(num))>4: return str(num)
+    else: return str(num).replace(str(num),(5-len(str(num)))*'0'+str(num))
     """
     Приведите число number к пятизначному виду.
 
@@ -89,8 +132,12 @@ def t9(number):
     """
     pass
 
-
 def t10(string):
+    while len(string)>1:
+            string = string.split(' ')
+            string = ' '.join([string[i]+string[i+1] for i in range(len(string)-1)])
+            string = string.replace('GG','G').replace('RR','R').replace('BB','B').replace('GB','R').replace('BG','R').replace('RB','G').replace('BR','G').replace('GR','B').replace('RG','B')
+    else: return string
     """
     Произведите смешивание цветов. Вам будет дана строка, необходимо смешать все пары цветов и вернуть результируюший
         цвет
@@ -112,6 +159,11 @@ def t10(string):
 
 
 def t11(lst):
+    l = []
+    for i in range(1,len(lst)-1):
+        if lst[i-1]==lst[i+1]: l.append(i)
+        else: i+1
+    return min(l)
     """
     Вам дам список из целых чисел. Найдите индекс числа такого, что левая и правая части списка от него равны
         Если такого элемента нет - верните -1. Если вы нашли два элемента -> верните тот, который левее.
@@ -135,6 +187,13 @@ def t12(lst):
 
 
 def t13(number_1, number_2):
+    j=str(max(number_1,number_2))[:len(str(max(number_1,number_2)))-len(str(min(number_1,number_2)))]
+    new = []
+    for i in range(len(str(min(number_1,number_2)))):
+        new.append(str(int(str(number_1)[-i-1])+ int(str(number_2)[-i-1])))
+    new = new[::-1]  
+    new = j + ''.join(new)
+    return new
     """
     Сложите два числа по элементно:
         248
@@ -145,6 +204,14 @@ def t13(number_1, number_2):
 
 
 def t14(string):
+    def t14(string): 
+    symb={ '+': 'Plus ', '-': 'Minus ', '*': 'Times ', '/': 'Divided By ', '**': 'To The Power Of ', '=': 'Equals ', '!=': 'Does Not Equal ' } 
+    num={'10': 'Ten ', '9': 'Nine ','8': 'Eight ','7': 'Seven ','6': 'Six ','5': 'Five ','4': 'Four ','3': 'Three ','2': 'Two ','1': 'One ', '0': 'Zero '} 
+    symb.update(num) 
+    c=string.split() 
+    for i in range(len(c)): 
+        c[i]=symb[c[i]] 
+    return ''.join(c).strip()
     """
     Преобразуйте математическое выражение (символьное) в буквенное выраэение
 
@@ -165,6 +232,18 @@ def t14(string):
 
 
 def t15(lst):
+    st = len(lst)
+    col = len(lst[1])
+    new=[]
+    for i in range(st):
+        for j in range(col):
+            if i == j and i!=col -1 -i : new.append(lst[i][j] )
+            elif j == col -1 -i and i!=col -1 -i: new.append(lst[i][j])
+            elif i == j and j == col -1 -i: 
+                new.append(lst[i][j])
+                new.append(lst[i][j])
+            else: j+1
+    return(sum(new))
     """
     Найдите сумму элементов на диагоналях
 
