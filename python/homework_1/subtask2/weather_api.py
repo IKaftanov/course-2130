@@ -1,37 +1,47 @@
 import requests
-
+import datetime as dt
+import collections as coll
 
 class WeatherAPI:
     # https://yandex.ru/dev/weather/doc/dg/concepts/forecast-test-docpage/#req-example
 
-    api_url = 'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
-
     def __init__(self, api_key):
-        pass
+        self.url = 'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&extra=true'
+        self.key = api_key
 
     def get_current_weather(self, lat, lon):
-        """
-            TODO: return a weather for current day
-            {
-                'name': name (time zone name),
-                'current_time': current time,  # форматируйте время
-                'condition': condition (check the api description),
-                'temp': f'temp °C',
-                'wind_speed': f"{wind_speed} м/c"
-            }
+        response = requests.get(self.url.format(lat=lat, lon=lon), headers={'X-Yandex-API-Key': self.key}).json()
+        current = {'time zone': response['info']['tzinfo']['name'],
+                    'current time': dt.datetime.fromtimestamp(response['now']).strftime('%m-%d %H:%M:%S'),
+                    'condition': response['fact']['condition'],
+                    'temp': '{temp} °C'.format(temp = response['fact']['temp']),
+                    'wind speed': '{wind_speed} м/с'.format(wind_speed = response['fact']['wind_speed'])}
+        return ' \n'.join(f'{key}: {value}' for key, value in current.items())
 
-        """
-        pass
 
     def get_forecast(self, lat, lon):
-        """
-            TODO: return a forecast for 7 days
-            [{
-                    'day': i,
-                    'temp': sum(temps) / len(temps),  # температуры по частям дня
-                    'condition': most popular condition,  # самое популярное состояние по частям дня
-                    'sunrise': sunrise,
-                    'sunset': sunset
-            }...]
-        """
-        pass
+        response = requests.get(self.url.format(lat=lat, lon=lon), headers={'X-Yandex-API-Key': self.key}).json()
+        string = ''
+
+        def AverageTemperature(parts):
+            first = (parts['day']['temp_avg'] + parts['night']['temp_avg'])/4
+            second = (parts['evening']['temp_avg']+parts['morning']['temp_avg'])/4
+            return first+second
+
+        def mostPopularCondition(parts):
+            conditions = (parts['day']['condition'],parts['night']['condition'],parts['evening']['condition'], parts['morning']['condition'])
+            return coll.Counter(conditions).most_common(1)[0][0]
+
+        def forecastWeather(ind, day):
+            forecast = {'day': ind,
+                     'temp': '{temp} °C'.format(temp = AverageTemperature(day['parts'])),
+                     'condition': mostPopularCondition(day['parts']),
+                     'sunrise/sunset': '{sunrise}/{sunset}'.format(sunrise = day['sunrise'], sunset = day['sunset'])}
+            return ', '.join(f'{key}: {value}' for key, value in forecast.items())
+
+        for ind, day in enumerate(response['forecasts']):
+            string += '\n\n' + forecastWeather(ind, day)
+        return string
+
+
+
