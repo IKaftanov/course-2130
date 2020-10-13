@@ -75,9 +75,9 @@ def t5(strings):
                 y = int(y)
                 z = int(z)
                 xyz = int(xyz)
-            my_string = ' '.join(new_lst)
-            if x * y * z == xyz:
-                filtered_str.append(my_string)
+                my_string = ' '.join(new_lst)
+                if x * y * z == xyz:
+                    filtered_str.append(my_string)
     return filtered_str
 
 

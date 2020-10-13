@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 WEATHER_CONVERSATION_COMMANDS = ['current', 'forecast']
 WEATHER_COMMAND_SELECTION = 0
 WEATHER_RETURN = 1
-location = None
 
 def start(update, context):
     """Send a message when the command /start is issued."""

@@ -1,4 +1,5 @@
 import requests
+import collections
 from datetime import datetime
 
 
@@ -68,15 +69,8 @@ class WeatherAPI:
             conditions = []
             for key in day['parts']:
                 conditions.append(day['parts'][key]['condition'])
-            condition = ''
-            con_count = 0
-            for item in set(conditions):
-                cur_count = conditions.count(item)
-                if cur_count > con_count:
-                    condition = item
-                    con_count = cur_count
-
+            counts = collections.Counter(conditions)
+            condition = sorted(conditions, key=lambda x: (counts[x], x), reverse=True)[0]
             message.append(day_weather.format(i, temp, condition, sunrise, sunset))
-
         return "\n".join(message)
 
