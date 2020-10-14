@@ -23,24 +23,24 @@ class WeatherAPI:
         response = requests.get(self.url.format(lat=lat, lon=lon), headers={'X-Yandex-API-Key': self.key}).json()
         string = ''
 
-        def AverageTemperature(parts):
+        def average_temperature(parts):
             first = (parts['day']['temp_avg'] + parts['night']['temp_avg'])/4
             second = (parts['evening']['temp_avg']+parts['morning']['temp_avg'])/4
             return first+second
 
-        def mostPopularCondition(parts):
+        def most_popular_condition(parts):
             conditions = (parts['day']['condition'],parts['night']['condition'],parts['evening']['condition'], parts['morning']['condition'])
             return coll.Counter(conditions).most_common(1)[0][0]
 
-        def forecastWeather(ind, day):
+        def forecast_weather(ind, day):
             forecast = {'day': ind,
-                     'temp': '{temp} °C'.format(temp = AverageTemperature(day['parts'])),
-                     'condition': mostPopularCondition(day['parts']),
+                     'temp': '{temp} °C'.format(temp = average_temperature(day['parts'])),
+                     'condition': most_popular_condition(day['parts']),
                      'sunrise/sunset': '{sunrise}/{sunset}'.format(sunrise = day['sunrise'], sunset = day['sunset'])}
             return ', '.join(f'{key}: {value}' for key, value in forecast.items())
 
         for ind, day in enumerate(response['forecasts']):
-            string += '\n\n' + forecastWeather(ind, day)
+            string += '\n\n' + forecast_weather(ind, day)
         return string
 
 
