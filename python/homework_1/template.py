@@ -57,6 +57,18 @@ def t5(strings):
     return result
 
 
+def t5(strings):
+    b = []
+    for string in strings:
+        try:
+            x, y, z, mult = [int(i) for i in string.split()]
+            if f'{x} {y} {z} {x*y*z}' == string and (x >= 0 and y >= 0 and z >= 0):
+                b.append(string)
+        except ValueError:
+            continue
+    return b
+
+
 def t6(string):
     while string.find('#') >= 0:
         i = string.find('#')
@@ -88,18 +100,7 @@ def t8(string):
 
 
 def t9(number):
-    string = str(number)
-    if len(string) >= 5:
-        return string
-    else:
-        if len(string) == 1:
-            return '0000' + string
-        if len(string) == 2:
-            return '000' + string
-        if len(string) == 3:
-            return '00' + string
-        if len(string) == 4:
-            return '0' + string
+    return f'{number:05d}'
 
 
 def t10(string):
