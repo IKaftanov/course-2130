@@ -52,7 +52,10 @@ def t5(strings):
     def func(string):
         x, y, z, p = list(map(int, string.split()))
         return string == f'{x} {y} {z} {x*y*z}'
-    return list(filter(func, strings))
+    try:
+        return list(filter(func, strings))
+    except ValueError:
+        return False
 
 
 def t6(string):
@@ -66,15 +69,13 @@ def t6(string):
     ""              ==>  ""
     """
     while True:
-        result = re.sub(r'\w#', '', string)
+        result = re.sub(r'[^#]#', '', string)
         if result == string:
             break
         string = result
-    if '#' in string:
-        return ''
-    else:
-        return string
-        
+    return string.replace('#', '')
+                          
+    
 def t7(lst):
     """
     На вход подается список элементов, найдите сумму уникальных элементов списка.

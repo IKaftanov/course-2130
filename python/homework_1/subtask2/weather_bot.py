@@ -44,12 +44,12 @@ def weather_handler(update, context):
     if update.message.text == WEATHER_CONVERSATION_COMMANDS[0]:
         update.message.reply_text('current weather', reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a current weather from yandex there
-        weather_reply = WeatherAPI(YANDEX_WEATHER_API_KEY).get_current_weather(lat=lat, lon=lon)
+        weather_reply = weather_api.get_current_weather(lat=lat, lon=lon)
         update.message.reply_text('\n'.join([f'{key}: {value}' for (key, value) in weather_reply.items()]))
     elif update.message.text == WEATHER_CONVERSATION_COMMANDS[1]:
         update.message.reply_text('forecast', reply_markup=telegram.ReplyKeyboardRemove())
         # TODO: send a forecast of weather from yandex there
-        weather_reply_dict = WeatherAPI(YANDEX_WEATHER_API_KEY).get_forecast(lat=lat, lon=lon)
+        weather_reply_dict = weather_api.get_forecast(lat=lat, lon=lon)
         weather_reply = []
         for day_forecast in weather_reply_dict:
             weather_reply.append(', '.join([f'{key}: {value}' for (key, value) in day_forecast.items()]))
