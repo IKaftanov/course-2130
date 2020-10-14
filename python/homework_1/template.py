@@ -11,7 +11,7 @@ def t1(number):
     i=0
     while (number+i)%20 !=0:
         i+=1
-    print(number+i)
+    return  number+i
     """
     Поправьте код что бы возвращаемое значение было ближайшим сверху, кратным к 20
 
@@ -26,7 +26,7 @@ def t2(string):
     a = string[::-1]
     b = a.split()
     b.reverse()
-    print(' '.join(b))
+    return ' '.join(b)
     """
     На вход подается набор слов разделенных пробелом, инвертируйте каждое слово.
     Пример: `abc abc abc` -> `cba cba cba`
@@ -39,7 +39,7 @@ def t3(dictionary):
     y = x[1:-1]
     z = y.replace(',', ';')
     otvet = z.replace("'", '')
-    print(otvet)
+    return otvet
     """
     На вход подается словарь. Преорбазуйте его в строку по следующему шаблону 'key: value; key: value' и так далее
 
@@ -49,10 +49,7 @@ def t3(dictionary):
 
 def t4(string, sub_string):
     x = sub_string[::-1]
-    if string.find(x) != -1:
-        print('True')
-    else:
-        print('False')
+    return string.find(x) != -1
     """
     проверить есть ли в строке инвертированная подстрока
     """
@@ -66,7 +63,7 @@ def t5(strings):
         if s.isdigit() == True and int(i.split()[0]) * int(i.split()[1]) * int(i.split()[2]) == int(
                 i.split()[3]) and len(i.split()) == 4:
             answer.append(str(i))
-    print(answer)
+    return answer
     """
     На вход подается список строк,
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
@@ -92,7 +89,7 @@ def t7(lst):
     for i in lst:
         if lst.count(i) == 1:
             summa += i
-    print(summa)
+    return summa
     """
     На вход подается список элементов, найдите сумму уникальных элементов списка.
 
@@ -107,7 +104,7 @@ def t8(string):
     answ = re.findall(rexp, string)
     for i in answ:
         i = int(i)
-    print(max(answ))
+    return max(answ)
     """
     Найдите все последовательности числев в строке и среди них найдите максимальное число
 
@@ -117,7 +114,7 @@ def t8(string):
 
 
 def t9(number):
-    print(int('{:05}'.format(number)))
+    return ('{:05}'.format(number))
     """
     Приведите число number к пятизначному виду.
 
@@ -141,7 +138,6 @@ def t10(string):
         print(string)
         for i in range(len(string) - 1):
             string = ff(string)
-            print(string)
         return string
 
     outer(string)
@@ -181,7 +177,7 @@ def t12(lst):
     lst = str(lst)
     rexp = r'[0-9]+'
     answ = re.findall(rexp, lst)
-    print(answ)
+    return answ
     """
     На вход подается список строк вида `Что-то происходит бла бла бла +7495 123-45-67` содержащие номер телефона.
         Используя regex выражения запишите всевозможноые комбинации телефонов, например программа должна корректно
@@ -203,8 +199,10 @@ def t13(number_1, number_2):
     list4 = [int(q) for q in list2]
 
     c = [x + y for x, y in zip(list3, list4)]
-    for t in c:
-        print(t, end='')
+    for i in range(len(c)):
+        c[i]=str(c[i])
+    answer = ''.join(c)
+    return answer
     """
     Сложите два числа по элементно:
         248
@@ -223,9 +221,8 @@ def t14(string):
             '=': 'Equals',
             '!=': 'Does Not Equal', '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five',
             '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine', '10':'Ten'}
-
-    for i in string.split():
-        print(dict.get(i), end=' ')
+    s=string.split()
+    return dict.get(s[0])+' '+dict.get(s[1])+' ' +dict.get(s[2])
     """
     Преобразуйте математическое выражение (символьное) в буквенное выраэение
 
@@ -256,7 +253,7 @@ def t15(lst):
         sum1 += l[k]
     for q in range(len(lst) - 1, len(lst) ** 2 - len(lst) + 1, len(lst) - 1):
         sum2 += l[q]
-    print(sum1 + sum2)
+    return sum1 + sum2
     """
     Найдите сумму элементов на диагоналях
 
