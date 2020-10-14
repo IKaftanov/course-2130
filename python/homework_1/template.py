@@ -78,17 +78,17 @@ def t5(strings):
     Отфильтруйте список строк, оставив только строки в формате: `x y z x*y*z`, где x,y,z - целые положительные числа
     """
     l = []
-    try:
-        for i in strings:
-            x = i.split(" ")
+    for i in strings:
+        x = i.split(" ")
+        try:
             a = int(x[0])
             b = int(x[1])
             c = int(x[2])
             d = int(x[3])
             if d == a * b * c:
                 l.append(i)
-    except ValueError:
-        pass
+        except ValueError:
+            pass
     return l
 
 
