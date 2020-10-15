@@ -10,16 +10,11 @@ def t2(string):
     b = list(string)
     b.reverse()
     c = ("".join(b))
-    if len(a) == 0:
-        return '""'
-    else:
-        return str(c)
+    return str(c)
   
 
 def t3(dictionary):
-    if dictionary=={}:
-        return '""'
-    else:list1 = []
+    list1 = []
     for key, value in dictionary.items():
         res = key + ": " + str(value)
         list1.append(res)
@@ -65,10 +60,7 @@ def t6(string):
     b = a.join(l)
     b = str(b)
     b = ''.join(b.split())
-    if b == "":
-        return '""'
-    else:
-        return b
+    return b
     
     
 def t7(lst):
