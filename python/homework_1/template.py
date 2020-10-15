@@ -54,10 +54,11 @@ def t5(strings):
     """
     strings_filtered = []
     for i in strings:
-        x, y, z, a = list(map(int, i.split()))
-        if x * y * z == a:
-            strings_filtered.append(i)
-        else:
+        try:
+            x, y, z, a = list(map(int, i.split()))
+            if x * y * z == a and x >= 0 and y >= 0 and z >= 0:
+                strings_filtered.append(i)
+        except ValueError:
             pass
     return strings_filtered
 
@@ -72,12 +73,12 @@ def t6(string):
     "#######"       ==>  ""
     ""              ==>  ""
     """
-    while True:
-        result = re.sub(r'\w#', '', string)
+    while '#' in string:
+        result = re.sub(r'.#', '', string)
         if result == string:
             break
         string = result
-    if '#' in string:
+    if string == '#':
         return ''
     else:
         return string
