@@ -49,5 +49,5 @@ class WeatherAPI:
                       'sunrise': day['sunrise'],
                       'sunset': day['sunset'],
                       }
-                     for i, day in enumerate(request['forecasts'])]
+                     for day in request['forecasts']]
         return forecasts
