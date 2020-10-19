@@ -7,10 +7,14 @@ def t1(number):
         return (1 + num1 // 20) * 20
   
 def t2(string):
-    b = list(string)
-    b.reverse()
-    c = ("".join(b))
-    return str(c)
+    b = string.split()
+    list=[]
+    c = ""
+    for i in x:
+        res = i[::-1]
+        list.append(res)
+        c = " ".join(list)
+    return c
   
 
 def t3(dictionary):
