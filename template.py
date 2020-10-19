@@ -18,11 +18,12 @@ def t2(string):
   
 
 def t3(dictionary):
-    list1 = []
+    r = ""
+    list = []
     for key, value in dictionary.items():
         res = key + ": " + str(value)
-        list1.append(res)
-        r = "; ".join(list1)
+        list.append(res)
+        r = "; ".join(list)
     return r
    
 
@@ -38,12 +39,15 @@ def t5(strings):
     l = []
     for i in strings:
         x = i.split(" ")
-        a = int(x[0])
-        b = int(x[1])
-        c = int(x[2])
-        d = int(x[3])
-        if d == a * b * c:
-            l.append(i)
+        try:
+            a = int(x[0])
+            b = int(x[1])
+            c = int(x[2])
+            d = int(x[3])
+            if d == a * b * c:
+                l.append(i)
+        except ValueError:
+            pass
     return l
    
 
@@ -104,23 +108,7 @@ def t9(number):
 
 def t10(string):
    
-    x = string
-    s = {"B", "G", "R"}
-    i = 0
-    if len(x) == 1:
-        a = x[0]
-    else:
-        while i < len(x) - 1:
-            if x[i] == x[i + 1]:
-                a = x[i]
-            else:
-                s.remove(x[i])
-                s.remove(x[i + 1])
-                a = "".join(s)
-            i += 1
-            s = {"B", "G", "R"}
-
-    return a
+    
   
 
 
