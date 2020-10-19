@@ -1,3 +1,4 @@
+import re
 
 def t1(number):
     num1 = int(number)
@@ -107,37 +108,38 @@ def t9(number):
   
 
 def t10(string):
+    mixes = {'BG': 'R', 'RG': 'B', 'BR': 'G', 'GB': 'R', 'GR': 'B', 'RB': 'G'}  
+    if len(string) > 1:
+        sub_string = []
+        for i in range(len(string) - 1):
+            x, y = string[i], string[i + 1]
+            if x == y:
+                sub_string.append(x)
+            else:
+                sub_string.append(mixes[x + y])
+        return t10(''.join(sub_string))
+    else:
+        return string
    
     
   
 
 
 def t11(lst):
-    l = lst
-    l = list(l)
-    a = sum(l)
-    c = 0
-    for i, j in enumerate(l):
-        if 2 * c < a:
-            c = c + j
-        else:
-            if 2 * c - l[i - 1] == a:
-                return (i - 1)
-            else:
-                return -1
+    for i in range(len(lst)):
+        if sum(lst[:i]) == sum(lst[i+1:]):
+            return i  
+    return int(-1)
 
  
 
 
 def t12(lst):
-    import re
-    s = lst
-    s = str(s)
-    r = re.findall(r'\d+', s)
-    a = "".join(r)
-    a = [a[i:i + 11] for i in range(0, len(s), 11)]
-    a = filter(None, a)
-    return a
+    pnum = []
+    for string in lst:
+        n = ''.join(re.findall(r'\d+', string))
+        pnum.append(n[0].replace('7', '8')+n[1:])    
+    return pnum
 
 
 
@@ -174,16 +176,16 @@ def t14(string):
          '**': 'To The Power Of ',
          '=': 'Equals ',
          '!=': 'Does Not Equal ',
-         '0': 'zero',
-         '1': 'one',
-         '2': 'two',
-         '3': 'three',
-         '4': 'four',
-         '5': 'five',
-         '6': 'six',
-         '7': 'seven',
-         '8': 'eight',
-         '9': 'nine'}
+         '0': 'Zero',
+         '1': 'One',
+         '2': 'Two',
+         '3': 'Three',
+         '4': 'Four',
+         '5': 'Five',
+         '6': 'Six',
+         '7': 'Seven',
+         '8': 'Eight',
+         '9': 'Nine'}
     l = list(d.keys())
     for i in l:
         s = s.replace(i, d[i])
