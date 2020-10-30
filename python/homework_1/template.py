@@ -1,32 +1,34 @@
 
 def t1(number):
-    if number%20 == 0 : new = number
-    else: new = (number//20+1)*20 
+    if number%20 == 0 : 
+        new = number
+    else:
+        new = (number//20+1)*20 
     return new
 
-    pass
 
 
 def t2(string):
     new = ' '.join(i[::-1] for i in string.split(' '))
     return new
 
-    pass
+
 
 
 def t3(dictionary):
     new = '; '.join([f'{key}: {value}' for key, value in dictionary.items()])
     return new
 
-    pass
+
 
 
 def t4(string, sub_string):
-    if string.find(sub_string[::-1])==-1: new = False 
-    else: new = True 
+    if string.find(sub_string[::-1])==-1:
+        new = False 
+    else: 
+        new = True 
     return new
 
-    pass
 
 
 def t5(strings):
@@ -34,20 +36,23 @@ def t5(strings):
     for i in range(len(strings)):
         if strings[i].replace(' ', '').isdigit() == 1: 
             k= [int(j) for j in strings[i].split(" ")]
-            if k[3]==k[0]*k[1]*k[2] and len(k)==4: new.append(strings[i])
+            if k[3]==k[0]*k[1]*k[2] and len(k)==4:
+                new.append(strings[i])
             else: i=i+1
     return new
 
-    pass
+
 
 
 def t6(string):
     while string.find("#")!=-1:
-        if string.find("#")==0 : string = string[string.find("#")+1:]
-        else: string = string[:(string.find("#")-1)]+string[(string.find("#")+1):]
+        if string.find("#")==0 :
+            string = string[string.find("#")+1:]
+        else:
+            string = string[:(string.find("#")-1)]+string[(string.find("#")+1):]
     return string
 
-    pass
+
 
 
 def t7(lst):
@@ -56,51 +61,58 @@ def t7(lst):
         for j in range(len(lst)):
             if i != j and lst[i] == lst[j]:
                 break
-        else: new.append(lst[i])
+        else:
+            new.append(lst[i])
     return sum(new)
     
 
-    pass
+
 
 
 def t8(string):
-    new=[] 
-    num='' 
+    new=[]
+    num=''
+    num1=''
     for i in range(len(string)): 
-        if string[i].isdigit()==1: num=num+string[i] 
-        else: 
-            if num!='': 
-                new.append(int(num)) 
-                num='' 
-    if num!='': 
-        new.append(int(num)) 
+        num1=num
+        num=num+string[i]
+        if num.isdigit()!=1:
+            num=''
+            if num1!='':
+                new.append(int(num1))
+                num1=''
+    new.append(int(num))
     return max(new)
 
-    pass
-
+  
 
 def t9(number):
-    if len(str(number))>4: return str(number)
-    else: return str(number).replace(str(number),(5-len(str(number)))*'0'+str(number))
+    if len(str(number))>4:
+        return str(number)
+    else:
+        return str(number).replace(str(number),(5-len(str(number)))*'0'+str(number))
 
-    pass
+
 
 def t10(string):
     b = list(string)
     c=len(b)
+    e=''
     if c==1:
         return ''.join(b)
-    for i in range(c):
+    for i in range(c-1):
         d=len(b)
+        e=''
         for j in range(d-1):
             if (b[j]=='B' and b[j+1]=='R') or (b[j+1]=='B' and b[j]=='R'):
-                b[j]='G'
+                e=e+'G'
             elif (b[j]=='R' and b[j+1]=='G') or (b[j+1]=='R' and b[j]=='G'):
-                b[j]='B'
+                e=e+'B'
             elif (b[j]=='G' and b[j+1]=='B') or (b[j+1]=='G' and b[j]=='B'):
-                b[j]='R'
-        if len(b)>1: b=b[0:-1:]
-        else: return ''.join(b)
+                e=e+'R'
+            else:
+                e=e+b[j]
+        b = list(e)
     return ''.join(b)
     """
     Произведите смешивание цветов. Вам будет дана строка, необходимо смешать все пары цветов и вернуть результируюший
@@ -119,16 +131,20 @@ def t10(string):
            G  <-- вывод
 
     """
-    pass
+  
 
 
 def t11(lst):
     l = []
     for i in range(1,len(lst)-1):
-        if sum(lst[:i])==sum(lst[i+1:]): l.append(i)
-        else: i+1
-    if l==[]: l.append(-1)
-    else:l
+        if sum(lst[:i])==sum(lst[i+1:]): 
+            l.append(i)
+        else:
+            i+1
+    if l==[]:
+        l.append(-1)
+    else:
+        l
     return min(l)
     """
     Вам дам список из целых чисел. Найдите индекс числа такого, что левая и правая части списка от него равны
@@ -143,17 +159,19 @@ def t11(lst):
 import re
 def t12(lst):
     b=[]
+    d=[]
     for i in range(len(lst)):
         a=''.join(re.findall(r'\+?\d[\( -]?\d{3}[\) -]?\d{3}[ -]?\d{2}[ -]?\d{2}',lst[i]))
-        a=a.replace(' ','')
-        a=a.replace("-","")
-        a=a.replace("+","")
-        a=a.replace(")","")
-        a=a.replace("(","")
-        if len(a)==11:
-            a='8'+a[1::]
-        else: a='8'+a
-        b.append(a)
+        c=list(a)
+        d=[]
+        for j in range(len(c)):
+            if c[j].isdigit()==1:
+                d.append(c[j])
+        d=''.join(d)
+        if len(d)==11:
+            d='8'+d[1::]
+        else: d='8'+d
+        b.append(d)
     return b
 
     """
@@ -164,7 +182,7 @@ def t12(lst):
     Выход: [`84951234567`]
 
     """
-    pass
+ 
 
 
 def t13(number_1, number_2):
@@ -181,18 +199,16 @@ def t13(number_1, number_2):
        +208
         4416
     """
-    pass
+
 
 
 
 def t14(string):
-    symb={'+': 'Plus ', '-': 'Minus ', '*': 'Times ', '/': 'Divided By ', '**': 'To The Power Of ', '=': 'Equals ', '!=': 'Does Not Equal ' }
-    num={'10': 'Ten ', '9': 'Nine ','8': 'Eight ','7': 'Seven ','6': 'Six ','5': 'Five ','4': 'Four ','3': 'Three ','2': 'Two ','1': 'One ', '0': 'Zero '} 
-    symb.update(num) 
-    c=string.split() 
-    for i in range(len(c)): 
-        c[i]=symb[c[i]] 
-    return ''.join(c).strip()
+    dicti={ '+':   'Plus', '-':   'Minus', '*':   'Times', '/':   'Divided By', '**':  'To The Power Of', '=':   'Equals', '!=':  'Does Not Equal', '10': 'Ten', '9': 'Nine','8': 'Eight','7': 'Seven','6': 'Six','5': 'Five','4': 'Four','3': 'Three','2': 'Two','1': 'One', '0': 'Zero' }
+    s=string.split()
+    for i in range(len(s)):
+        s[i]=dicti[s[i]]
+    return ' '.join(s)
     """
     Преобразуйте математическое выражение (символьное) в буквенное выраэение
 
@@ -209,21 +225,24 @@ def t14(string):
         10 - 5 -> Ten Minus Five
         2 = 2  -> Two Equals Two
     """
-    pass
+
 
 
 def t15(lst):
     st = len(lst)
-    col = len(lst[1])
+    col = len(lst[0])
     new=[]
     for i in range(st):
         for j in range(col):
-            if i == j and i!=col -1 -i : new.append(lst[i][j] )
-            elif j == col -1 -i and i!=col -1 -i: new.append(lst[i][j])
+            if i == j and i!=col -1 -i :
+                new.append(lst[i][j] )
+            elif j == col -1 -i and i!=col -1 -i:
+                new.append(lst[i][j])
             elif i == j and j == col -1 -i: 
                 new.append(lst[i][j])
                 new.append(lst[i][j])
-            else: j+1
+            else: 
+                j+1
     return(sum(new))
     """
     Найдите сумму элементов на диагоналях
@@ -233,5 +252,5 @@ def t15(lst):
     [ 7, 8, 9 ]]
     Результат: 30
     """
-    pass
+
 
