@@ -25,20 +25,18 @@ def filter_by_indices(lst: Optional[List[Any]], indices: Optional[List[Any]]):
     (
       Для удаления используется оператор `del`: `del my_list[1]` или `.pop()`
     )
-
     Input:
     ```
         [1, 2, 3, 4], [0, 1]
     ```
-
     Output:
     ```
         [3, 4]
     ```
     """
-    try:
-        for i in sorted(indices, reverse=True):
+    for i in sorted(indices, reverse=True):
+        try:
             del lst[i]
-        return lst
-    except Exception as e:
-        return []
+        except Exception as e:
+            continue
+    return lst
