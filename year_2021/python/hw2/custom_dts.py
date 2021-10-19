@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import List, Any
 
-
 class CycledList:
     """
     Реализуйте список фиксированой длины, в котором новые элементы перезаписываются
@@ -24,9 +23,19 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self.size = size
+        self.i = 0 # место вставки
 
     def append(self, item):
-        pass
+        if len(self._data) == self.size:
+            self._data.pop(self.i)
+        self._data.insert(self.i,item)
+        self.i+=1 # сдвигаем место вставки 
+        self.i=self.i%self.size # проверяем, что место вставки внутри листа
+    
+    def print_list(self):
+        # функция для отображения самого листа
+        return self._data 
 
 
 class Fraction:
@@ -43,25 +52,67 @@ class Fraction:
     В каждый момент времени дробь должна быть правильной
 
     """
+    
+    # общие функции
 
     def __init__(self, nominator, denominator):
         self.nominator = nominator
         self.denominator = denominator
+        self.nominator, self.denominator = Fraction.reduce(self.nominator, self.denominator)
 
     def __truediv__(self, other):
-        pass
+        na, da = self.nominator, self.denominator
+        nb, db = other.nominator, other.denominator
+        n, d = na * db, nb * da
+        if d < 0: # знак в числитель
+            n, d = -n, -d
+        return Fraction(n, d) 
 
     def __add__(self, other):
-        return Fraction(..., ...)
+        
+        na, da = self.nominator, self.denominator
+        nb, db = other.nominator, other.denominator
+        
+        return Fraction(na * db + da * nb, da * db)
+        
 
     def __mul__(self, other):
-        pass
+        
+        na, da = self.nominator, self.denominator
+        nb, db = other.nominator, other.denominator
+        
+        return Fraction(na * nb, da * db)
 
     def __sub__(self, other: Fraction) -> Fraction:
-        pass
+        
+        na, da = self.nominator, self.denominator
+        nb, db = other.nominator, other.denominator
+        
+        return Fraction(na * db - da * nb, da * db)
 
     def __repr__(self):
         return f'{self.nominator}/{self.denominator}'
+    
+    # мои функции
+    def __eq__(self, other: Fraction):
+        """a == b"""
+        return (self.nominator == other.nominator) and (self.denominator == other.denominator)
+    
+    @staticmethod
+    # наибольший общий делитель
+    def gcd(a, b):
+        if(b==0):
+            return a
+        else:
+            return Fraction.gcd(b,a%b)
+        
+    @staticmethod
+    # упрощатель дробей
+    def reduce(nominator, denominator):
+        nod = Fraction.gcd(nominator,denominator)
+        nominator /= nod
+        denominator /= nod
+        return int(nominator), int(denominator)
 
 
 class MyCounter:
@@ -74,13 +125,27 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        self.iterable = iterable
+        self._data = dict((x,self.iterable.count(x)) for x in set(self.iterable))
 
     def append(self, item):
-        pass
+        self.item = item
+        if self.item not in self._data:
+            self._data[self.item]=1
+        else:
+            self._data[self.item]+=1
+            
 
     def remove(self, item):
-        pass
+        self.item = item
+        if self.item not in self._data:
+            pass
+        else:
+            self._data.pop(self.item)
+            
+    def print_counter(self):
+        # функция для отображения самого счетчика
+        return self._data 
 
 
 class Figure:
@@ -101,24 +166,22 @@ class Square(Figure):
     """
     Реализуйте класс квадрат и два метода для него
     """
-    pass
+    def __init__(self, a1, a2):
+        self.a1 = a1
+        self.a2 = a2
+        if self.a1 != self.a2:
+            raise ValueError('Это не квадрат!')
+    
+    def perimeter(self):
+        return self.a1*4
 
-
-class Container:
-    def __init__(self, data):
-        self.data = data
-
-    def __delitem__(self, key):
-        del self.data[key]
-
-    def __getitem__(self, item):
-        return self.data[item]
-
-    def append(self, item):
-        self.data.append(item)
+    def square(self):
+        return self.a1**2
 
 
 class PersistentList:
+    
+
     """
     Реализуйте список где передаваемый список записывается в файл
     Любая операция удаления/добавления должна изменять файл
@@ -126,24 +189,49 @@ class PersistentList:
     Формат файла - json
     """
     def __init__(self, iterable: List[Any], path_to_file: str):
-        pass
+        
+        self.iterable = iterable
+        self.path_to_file = path_to_file
+        
+        self.save()
 
-    def append(self, item) -> None:
-        """add item to list"""
+    
+    def save(self):
+        import json
+        
+        with open(self.path_to_file, 'w') as outfile:
+            outfile.write(json.dumps(self.iterable))
 
-    def __getitem__(self, index):
-        """ return item by index """
-        pass
+    def append(self, obj):
+        self.iterable.append(obj)
+        
+        self.save()
+
+        
+
+    def __getitem__(self, item):
+
+        self.save()
+
+        return self.iterable[item]
 
     def delete(self, index: int) -> None:
         """ delete item by index
-
             if index greater then length of list back to start and repeat
                 [1, 2, 3] -> delete(4) -> [1, 3]
-
             if index lower then delete from end of list
-
         """
+        if len(self.iterable) < abs(index)+1:
+            index = index%len(self.iterable)
+            self.iterable.pop(index)
+        else:
+            self.iterable.pop(index)
+            
+        self.save()
+        
 
     def __repr__(self):
-        pass
+        
+        self.save()
+    
+        return  json.dumps(self.iterable, default=lambda x: str(x))
