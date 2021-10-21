@@ -130,3 +130,4 @@ def test_persistent_list():
     persistence_list.delete(4)
     assert read_store(store_path) == [1, 3]
     assert persistence_list[0] == 1
+
