@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import List, Any
+import json
 
 
 class CycledList:
@@ -23,9 +24,17 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self._size = size
+        self.element = 0
 
     def append(self, item):
-        pass
+        if len(self._data) == self._size:
+            self._data[self.element] = item
+            self.element += 1
+            if self.element >= self._size:
+                self.element = 0
+        else:
+            self._data.append(item)
 
 
 class Fraction:
@@ -46,18 +55,43 @@ class Fraction:
     def __init__(self, nominator, denominator):
         self.nominator = nominator
         self.denominator = denominator
+        self.reduction()
+
+    def reduction(self):
+        nominator = self.nominator
+        denominator = self.denominator
+        while (nominator != 0) and (denominator != 0):
+            if nominator >= denominator:
+                nominator = nominator % denominator
+            else:
+                denominator = denominator % nominator
+        gcd = denominator + nominator
+        self.nominator //= gcd
+        self.denominator //= gcd
 
     def __truediv__(self, other):
-        pass
+        inverted_other = Fraction(other.denominator, other.nominator)
+        return self * inverted_other
 
     def __add__(self, other):
-        return Fraction(..., ...)
+        first_nominator = self.nominator * other.denominator
+        first_denominator = self.denominator * other.denominator
+        second_nominator = other.nominator * self.denominator
+        return Fraction(first_nominator + second_nominator, first_denominator)
 
     def __mul__(self, other):
-        pass
+        nominator = self.nominator * other.nominator
+        denominator = self.denominator * other.denominator
+        return Fraction(nominator, denominator)
 
     def __sub__(self, other: Fraction) -> Fraction:
-        pass
+        first_nominator = self.nominator * other.denominator
+        first_denominator = self.denominator * other.denominator
+        second_nominator = other.nominator * self.denominator
+        return Fraction(first_nominator - second_nominator, first_denominator)
+
+    def __eq__(self, other):
+        return (self.nominator == other.nominator) and (self.denominator == other.denominator)
 
     def __repr__(self):
         return f'{self.nominator}/{self.denominator}'
@@ -73,13 +107,20 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        self._data = {}
+        for i in iterable:
+            self.append(i)
 
     def append(self, item):
-        pass
+        if item in self._data:
+            self._data[item] += 1
+        else:
+            self._data[item] = 1
 
     def remove(self, item):
-        pass
+        if item in self._data:
+            del self._data[item]
+
 
 
 class Figure:
@@ -100,7 +141,17 @@ class Square(Figure):
     """
     Реализуйте класс квадрат и два метода для него
     """
-    pass
+    def __init__(self, first_storona, second_storona):
+        self._first_storona = first_storona
+        self._second_storona = second_storona
+        super().__init__('Kirill')
+
+    def perimeter(self):
+        return 2 * self._first_storona + 2 * self._second_storona
+
+    def square(self):
+        return self._first_storona * self._second_storona
+
 
 
 class PersistentList:
@@ -111,16 +162,33 @@ class PersistentList:
     Формат файла - json
     """
     def __init__(self, iterable: List[Any], path_to_file: str):
-        pass
+        self._iterable = iterable
+        self._path_to_file = path_to_file
+        self.write_store()
 
-    def append(self):
-        pass
+    def write_store(self):
+        with open(self._path_to_file, 'w') as file:
+            json.dump(self._iterable, file)
+
+    def append(self, iterable):
+        self._iterable.append(iterable)
+        self.write_store()
 
     def __getitem__(self, item):
-        pass
+        return self._iterable.__getitem__(item)
 
-    def __delitem__(self, key):
-        pass
+    def delete(self, index: int) -> None:
+        """ delete item by index
+            if index greater then length of list back to start and repeat
+                [1, 2, 3] -> delete(4) -> [1, 3]
+            if index lower then delete from end of list
+        """
+        if index > 0:
+            index = index % len(self._iterable)
+        else:
+            index = -(-index % len(self._iterable))
+        del self._iterable[index]
+        self.write_store()
 
     def __repr__(self):
-        pass
+        return self._iterable.__repr__()
