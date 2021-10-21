@@ -130,17 +130,3 @@ def test_persistent_list():
     persistence_list.delete(4)
     assert read_store(store_path) == [1, 3]
     assert persistence_list[0] == 1
-
-test_reverse()
-test_filter_by_indices()
-test_legacy_t1()
-test_legacy_t2()
-test_legacy_t3()
-test_legacy_t4()
-test_fibonacci()
-test_cycled_list()
-test_call_rectifier()
-test_fraction()
-test_counter()
-test_square()
-test_persistent_list()
