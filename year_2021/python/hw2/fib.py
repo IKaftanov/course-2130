@@ -1,4 +1,5 @@
 
+
 def fibonacci():
     """
     # Задание 4
@@ -7,7 +8,7 @@ def fibonacci():
 
     Input:
     ```
-
+    Порядковый номер числа Фибоначчи
     ```
 
     Output:
@@ -17,4 +18,9 @@ def fibonacci():
         ...
     ```
     """
-    pass
+    fib1, fib2 = 0, 1
+    while True:
+        yield fib1
+        a = fib1 + fib2
+        fib1 = fib2
+        fib2 = a
