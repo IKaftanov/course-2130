@@ -1,4 +1,4 @@
-from __future__ import annotations
+
 
 from typing import List, Any
 
@@ -22,14 +22,31 @@ class CycledList:
     [6, 2, 3, 4, 5]
     ```
     """
+
     def __init__(self, size: int):
         self._data = []
+        self.size = size
+        self.element_number = 0
 
     def append(self, item):
-        pass
+        if self.size > len(self._data):
+            self._data.append(item)
+        else:
+            self._data[self.element_number] = item
+            if self.element_number < self.size - 1:
+                self.element_number += 1
+            else:
+                self.element_number = 0
+                pass
 
-
+def gcd(x, y):
+    if y > x:
+        x, y = y, x
+    if y == 0:
+        return x
+    return gcd(y, x % y)
 class Fraction:
+
     """
     Написать класс чисел с бесконечной точностью. Дроби.
     Определите следующие операции:
@@ -44,24 +61,48 @@ class Fraction:
 
     """
 
-    def __init__(self, nominator, denominator):
-        self.nominator = nominator
-        self.denominator = denominator
 
-    def __truediv__(self, other):
-        pass
+def __init__(self, nominator, denominator):
+    self.nominator = nominator
+    self.denominator = denominator
 
-    def __add__(self, other):
-        return Fraction(..., ...)
 
-    def __mul__(self, other):
-        pass
+def __truediv__(self, other):
+    self.nominator = self.nominator * other.denominator
+    self.denominator = self.denominator * other.nominator
+    return self
 
-    def __sub__(self, other: Fraction) -> Fraction:
-        pass
 
-    def __repr__(self):
-        return f'{self.nominator}/{self.denominator}'
+def __add__(self, other):
+    self.nominator = self.nominator * other.denominator + self.denominator * other.nominator
+    self.denominator = self.denominator * other.denominator
+    return self
+
+
+def __mul__(self, other):
+    self.nominator = self.nominator * other.nominator
+    self.denominator = self.denominator * other.denominator
+    return self
+
+
+def __sub__(self, other: Fraction) -> Fraction:
+    self.nominator = self.nominator * other.denominator - self.denominator * other.nominator
+    self.denominator = self.denominator * other.denominator
+    return self
+
+
+def __eq__(self, other):
+    if (self.nominator / gcd(self.nominator, self.denominator) == other.nominator / gcd(other.nominator,
+                                                                                        other.denominator)
+            and self.denominator / gcd(self.nominator, self.denominator) == other.denominator / gcd(other.nominator,
+                                                                                                    other.denominator)):
+        return True
+    else:
+        return False
+
+
+def __repr__(self):
+    return f'{self.nominator}/{self.denominator}'
 
 
 class MyCounter:
@@ -74,24 +115,32 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        counter = {}
+        for item in iterable:
+            counter[item] = counter.get(item, 0) + 1
+        self._data = counter
 
     def append(self, item):
-        pass
+        if item in self._data:
+            self._data += 1
+        else:
+            self._data[item] = 0
 
     def remove(self, item):
-        pass
+        if item in self._data:
+            del self._data[item]
 
 
 class Figure:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
     def perimeter(self):
-        return None
+        return 4 * self.a
 
     def square(self):
-        return None
+        return self.a ** 2
 
     def __repr__(self):
         return f'Figure({self.name})'
@@ -104,20 +153,6 @@ class Square(Figure):
     pass
 
 
-class Container:
-    def __init__(self, data):
-        self.data = data
-
-    def __delitem__(self, key):
-        del self.data[key]
-
-    def __getitem__(self, item):
-        return self.data[item]
-
-    def append(self, item):
-        self.data.append(item)
-
-
 class PersistentList:
     """
     Реализуйте список где передаваемый список записывается в файл
@@ -128,22 +163,14 @@ class PersistentList:
     def __init__(self, iterable: List[Any], path_to_file: str):
         pass
 
-    def append(self, item) -> None:
-        """add item to list"""
-
-    def __getitem__(self, index):
-        """ return item by index """
+    def append(self, item):
         pass
 
-    def delete(self, index: int) -> None:
-        """ delete item by index
+    def __getitem__(self, item):
+        pass
 
-            if index greater then length of list back to start and repeat
-                [1, 2, 3] -> delete(4) -> [1, 3]
-
-            if index lower then delete from end of list
-
-        """
+    def __delitem__(self, key):
+        pass
 
     def __repr__(self):
         pass
