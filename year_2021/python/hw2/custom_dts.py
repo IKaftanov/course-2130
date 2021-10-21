@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import List, Any
 import json
 
@@ -152,6 +153,20 @@ class Square(Figure):
     def square(self):
         return self._first_storona * self._second_storona
 
+
+
+class Container:
+    def __init__(self, data):
+        self.data = data
+
+    def __delitem__(self, key):
+        del self.data[key]
+
+    def __getitem__(self, item):
+        return self.data[item]
+
+    def append(self, item):
+        self.data.append(item)
 
 
 class PersistentList:
