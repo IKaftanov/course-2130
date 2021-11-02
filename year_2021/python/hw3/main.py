@@ -182,4 +182,4 @@ bin.append(33)
 bin.__getitem__(10)
 bin.__getitem__(11)
 bin.__delitem__(40)
-bin.__delitem__(20) == False
+bin.__delitem__(20)
