@@ -167,6 +167,20 @@ class Square(Figure):
     pass
 
 
+class Container:
+    def __init__(self, data):
+        self.data = data
+
+    def __delitem__(self, key):
+        del self.data[key]
+
+    def __getitem__(self, item):
+        return self.data[item]
+
+    def append(self, item):
+        self.data.append(item)
+
+
 class PersistentList:
     """
     Реализуйте список где передаваемый список записывается в файл
@@ -177,14 +191,22 @@ class PersistentList:
     def __init__(self, iterable: List[Any], path_to_file: str):
         pass
 
-    def append(self, item):
+    def append(self, item) -> None:
+        """add item to list"""
+
+    def __getitem__(self, index):
+        """ return item by index """
         pass
 
-    def __getitem__(self, item):
-        pass
+    def delete(self, index: int) -> None:
+        """ delete item by index
 
-    def __delitem__(self, key):
-        pass
+            if index greater then length of list back to start and repeat
+                [1, 2, 3] -> delete(4) -> [1, 3]
+
+            if index lower then delete from end of list
+
+        """
 
     def __repr__(self):
         pass
