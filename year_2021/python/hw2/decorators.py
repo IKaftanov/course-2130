@@ -15,6 +15,25 @@ def call_controller(n_calls: int, time_interval: int):
       pass
     ```
     """
+    
+    count = [0]
+
+    def _inner_decorator(fn):
+        def _inner_function(*args, **kwargs):
+            print(f'Sleeping for <{time_interval}> seconds')
+            time.sleep(time_interval)
+            print('I am trying to run')
+            if count[0] < n_calls:
+                count[0] += 1
+                print(f'Attempt <{count[0]}>')
+                return fn(*args, **kwargs)
+            else:
+                print(f'Limit exceeded after <{count[0]}> attempts')
+                return 
+
+        return _inner_function
+
+    return _inner_decorator
 
 
 def call_rectifier(func1, func2, func3, func4):
@@ -23,4 +42,12 @@ def call_rectifier(func1, func2, func3, func4):
         1. Запускает функцию, если она завершается с ошибкой, то запускает следующую
         2. Если все функции завершились ошибкой (exception) -> вызвает exception `RuntimeError`
     """
-    pass
+    
+    for func in [func1, func2, func3, func4]:
+            try:
+                func()
+                return func
+            except:
+                continue        
+            return func
+    raise RuntimeError
