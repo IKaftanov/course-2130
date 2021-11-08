@@ -1,7 +1,13 @@
 import telebot
 import requests
 from bs4 import BeautifulSoup
+
+#Мой токен бота
+
 bot = telebot.TeleBot('2132134649:AAH_v9sx77mVQLcyEBAqtU_TKfIsMgGCYIM')
+
+#Парсим данные в реальном времени с сайта Еврофутбол, которые выдаются по команде /start
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     url = 'https://www.euro-football.ru/online/today'
@@ -37,6 +43,9 @@ def start_message(message):
     bot.send_message(message.chat.id, ' '.join(d))
     pic = 'https://probukmeker.ru/web/uploads/news/maxreshtrkfvf1xbet.jpg'
     bot.send_photo(message.chat.id, pic)
+
+#Список команд бота
+
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     if message.text == "Привет":
