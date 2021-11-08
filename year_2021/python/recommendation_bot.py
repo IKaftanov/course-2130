@@ -6,6 +6,8 @@ from math import cos, asin, sqrt
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
                           ConversationHandler, CallbackContext)
 
+# bot: https://t.me/nearest_restaurant_bot
+
 TELEGRAM_KEY = '2052182860:AAGGiPO5uZ-6hQUKj7HAFSIr-Hz8sQH1EGw'
 
 RESTAURANTS_CONVERSATION_COMMANDS = ['nearest', 'add']
