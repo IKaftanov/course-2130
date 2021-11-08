@@ -1,0 +1,60 @@
+import telebot
+import requests
+from bs4 import BeautifulSoup
+
+#Мой токен бота
+
+bot = telebot.TeleBot('2132134649:AAH_v9sx77mVQLcyEBAqtU_TKfIsMgGCYIM')
+
+#Парсим данные в реальном времени с сайта Еврофутбол, которые выдаются по команде /start
+
+@bot.message_handler(commands=['start'])
+def start_message(message):
+    url = 'https://www.euro-football.ru/online/today'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    items = soup.find_all('div', class_='match-online-list__item')
+    k = 0
+    d = []
+    for n, i in enumerate(items, start=1):
+        try:
+            team1 = i.find('div', class_='team1name').text
+            team2 = i.find('div', class_='team2name').text
+            result = i.find('a', class_='match-online__item-score-link match-online__item-score_finish').text
+            status = i.find('div', class_='match-online-list__item-status').text
+        except:
+            try:
+                team1 = i.find('div', class_='team1name').text
+                team2 = i.find('div', class_='team2name').text
+                result = i.find('a', class_='match-online__item-score-link match-online__item-score_active').text
+                status = i.find('div', class_='match-online-list__item-status').text
+            except:
+                try:
+                    team1 = i.find('div', class_='team1name').text
+                    team2 = i.find('div', class_='team2name').text
+                    result = i.find('a', class_='match-online__item-score-link').text
+                    status = i.find('div', class_='match-online-list__item-status').text
+                except:
+                    continue
+        d.append(f'{status.replace("   ", "")}: {team1} {result} {team2}')
+        k = k + 1
+        if k == 25:
+            break
+    bot.send_message(message.chat.id, ' '.join(d))
+    pic = 'https://probukmeker.ru/web/uploads/news/maxreshtrkfvf1xbet.jpg'
+    bot.send_photo(message.chat.id, pic)
+
+#Список команд бота
+
+@bot.message_handler(content_types=['text'])
+def get_text_messages(message):
+    if message.text == "Привет":
+        bot.send_message(message.from_user.id, "Привет, чтобы посмотреть расписание матчей на сегодня воспользуйся /start")
+    elif message.text == "/help":
+        bot.send_message(message.from_user.id, "/start - посмотреть статус 25-ти сегодняшних матчей \n /bet - ссылка на надежного букмекера")
+    elif message.text == "/bet":
+        bot.send_message(message.from_user.id, "Большие выигрыши, быстрые выплаты! Надежный букмекер: https://1xstavka.ru/line/Football/")
+    else:
+        bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
+
+bot.polling(none_stop=True, interval=0)

@@ -22,5 +22,14 @@ def call_rectifier(func1, func2, func3, func4):
     Напишите декоратор который на вход принимает 4 функции и следует следующие логике:
         1. Запускает функцию, если она завершается с ошибкой, то запускает следующую
         2. Если все функции завершились ошибкой (exception) -> вызвает exception `RuntimeError`
+
     """
+    for func in [func1, func2, func3, func4]:
+            try:
+                func()
+                return func
+            except:
+                continue
+            return func
+    raise RuntimeError
     pass

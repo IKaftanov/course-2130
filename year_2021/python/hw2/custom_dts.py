@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import List, Any
 
 
@@ -24,8 +23,15 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self.size = size
+        self.index = 0
 
     def append(self, item):
+        if len(self._data) < self.size:
+            self._data.append(item)
+        else:
+            self._data[self.index] = item
+            self.index += 1 if self.index < self.size - 1 else 0
         pass
 
 
@@ -47,17 +53,34 @@ class Fraction:
     def __init__(self, nominator, denominator):
         self.nominator = nominator
         self.denominator = denominator
+        max = 1
+        for i in range(2, min(self.nominator, self.denominator) + 1):
+            if self.nominator % i == 0 and self.denominator % i == 0:
+                max = i
+        self.nominator = self.nominator // max
+        self.denominator = self.denominator // max
 
     def __truediv__(self, other):
+        return Fraction(self.nominator * other.denominator, self.denominator * other.nominator)
         pass
 
     def __add__(self, other):
-        return Fraction(..., ...)
+        if self.denominator == other.denominator:
+            return Fraction(self.nominator + other.nominator, self.denominator)
+        else:
+            return Fraction(self.nominator * other.denominator + other.nominator * self.denominator,
+                            self.denominator * other.denominator)
 
     def __mul__(self, other):
+        return Fraction(self.nominator * other.nominator, self.denominator * other.denominator)
         pass
 
-    def __sub__(self, other: Fraction) -> Fraction:
+    def __sub__(self, other):
+        if self.denominator == other.denominator:
+            return Fraction(self.nominator - other.nominator, self.denominator)
+        else:
+            return Fraction(self.nominator * other.denominator - other.nominator * self.denominator,
+                            self.denominator * other.denominator)
         pass
 
     def __repr__(self):
@@ -74,13 +97,15 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        self._data = {}
+        for i in iterable:
+            self._data[i] = self._data.get(i, 0) + 1
 
     def append(self, item):
-        pass
+        self._data[item] = self._data.get(item, 0) + 1
 
     def remove(self, item):
-        pass
+        self._data.pop(item)
 
 
 class Figure:
@@ -101,21 +126,16 @@ class Square(Figure):
     """
     Реализуйте класс квадрат и два метода для него
     """
+
+    def __init__(self, a):
+        self.a = a
+
+    def perimeter(self):
+        return 4 * self.a
+
+    def square(self):
+        return self.a ** 2
     pass
-
-
-class Container:
-    def __init__(self, data):
-        self.data = data
-
-    def __delitem__(self, key):
-        del self.data[key]
-
-    def __getitem__(self, item):
-        return self.data[item]
-
-    def append(self, item):
-        self.data.append(item)
 
 
 class PersistentList:
@@ -128,22 +148,14 @@ class PersistentList:
     def __init__(self, iterable: List[Any], path_to_file: str):
         pass
 
-    def append(self, item) -> None:
-        """add item to list"""
-
-    def __getitem__(self, index):
-        """ return item by index """
+    def append(self):
         pass
 
-    def delete(self, index: int) -> None:
-        """ delete item by index
+    def __getitem__(self, item):
+        pass
 
-            if index greater then length of list back to start and repeat
-                [1, 2, 3] -> delete(4) -> [1, 3]
-
-            if index lower then delete from end of list
-
-        """
+    def __delitem__(self, key):
+        pass
 
     def __repr__(self):
         pass
