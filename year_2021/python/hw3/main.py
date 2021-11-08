@@ -121,5 +121,3 @@ class BinaryTree:
         add element in BTS
         """
         pass
-
-
