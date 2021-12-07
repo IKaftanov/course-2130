@@ -1,10 +1,11 @@
 name: Duplicate code
 
-on: pull_request
+on: issue_comment
 
 jobs:
   duplicate-code-check:
     name: Check for duplicate code
+    if: github.event.issue.pull_request && contains(github.event.comment.body, 'run_duplicate_code_detection_tool')
     runs-on: ubuntu-20.04
     steps:
       - name: Check for duplicate code
