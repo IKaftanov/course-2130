@@ -18,3 +18,9 @@ def fibonacci():
     ```
     """
     pass
+  pass
+    num = [0,1,1]
+    while True:
+        yield num[0]
+        del(num[0])
+        num.append(num[0] + num[1])

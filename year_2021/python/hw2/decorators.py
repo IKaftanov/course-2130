@@ -1,6 +1,6 @@
+import time
 
-
-def call_controller(n_calls: int, time_interval: int):
+def call_controller(foo, n_calls: int, time_interval: int):
     """
     Напишите функцию декоратор, которая ограничивает количество вызовов функции.
 
@@ -15,7 +15,11 @@ def call_controller(n_calls: int, time_interval: int):
       pass
     ```
     """
-
+start = time.time()
+for i in range(n_calls) :
+    if time.time() - start >= time_interval:
+        break
+        foo()
 
 def call_rectifier(func1, func2, func3, func4):
     """
@@ -23,4 +27,14 @@ def call_rectifier(func1, func2, func3, func4):
         1. Запускает функцию, если она завершается с ошибкой, то запускает следующую
         2. Если все функции завершились ошибкой (exception) -> вызвает exception `RuntimeError`
     """
+    i = 0
+    for i in [func1, func2, func3, func4] :
+        i += 1
+        try :
+            f()
+            break
+        expect :
+            if i==4 :
+                raise Exception('RuntimeError')
+            pass    
     pass
