@@ -1,0 +1,85 @@
+import telebot
+import pandas as pd
+import re
+
+bot = telebot.TeleBot('2101079256:AAH1G1_ZeOGPxQFthGpPaMUhllsAdq70s58')
+df = pd.read_csv('new_test.csv', sep = ';')
+center_dist = []
+metro = []
+rating = []
+price = []
+@bot.message_handler(commands=['start'])
+def start_message(message):
+    bot.send_message(message.chat.id, 'Привет, команда /find поможет тебе выбрать отель')
+
+
+@bot.message_handler(commands=['find'], content_types = ['text'])
+def find_message(message):
+    bot.send_message(message.chat.id, 'Введите набор параметров в формате:\n\
+Расстояние до центра (в км): 5 10\n\
+Ближайшее метро: Партизанская\n\
+Рейтинг: 8 10\n\
+Цена за ночь: 1500 3000')
+
+@bot.message_handler(content_types=['text', 'document'])
+def send_text(message):
+    data = message.text
+    enter = False
+    while enter == False:
+        result = re.match(
+            r'\w{10}\s\w{2}\s\w{6}\s\W\w\s\w{2}\W\W\s\d\s\d\d\n\w{9}\s\w{5}\W\s\w{12}\n\w{7}\W\s\d\s\d\d\n\w{4}\s\w{2}\s\w{4}\W\s\d\d\d\d\s\d\d\d\d$',
+            data)
+        if result != None:
+            enter = True
+        else:
+            bot.send_message(message.chat.id, 'Ошибка ввода, попробуйте ещё раз')
+            return
+
+    center_dist = []
+    metro = []
+    rating = []
+    price = []
+
+    #bot.send_message(message.chat.id, f'{df}')
+    i = 0
+    lst = data.split('\n')
+
+    for line in lst:
+        lst[i] = lst[i][line.index(':') + 2:]
+        i += 1
+
+    for dist in lst[0].split():
+        center_dist.append(float(dist))
+    print(len(center_dist))
+    if len(center_dist) == 0:
+        center_dist = [0, 10000]
+
+    print(len(metro))
+    for metr in lst[1].split(','):
+        metro.append(metr)
+
+    if len(metro) == 0:
+        metro = list(df['Ближайшее метро'])
+    print(len(rating))
+    for rate in lst[2].split():
+        rating.append(float(rate))
+    if len(rating) == 0:
+        rating = [0, 10]
+
+    print(len(price))
+    for pri in lst[3].split():
+        price.append(float(pri))
+    if len(price) == 0:
+        price = [0, 1000000]
+
+
+    choose = df.loc[ (df['Расстояние до центра (в километрах)'] > center_dist [0])& (df['Расстояние до центра (в километрах)'] < center_dist[1])& (df['Цена за ночь'] <= price[1]) & (df['Цена за ночь'] >= price[0]) & (df.Рейтинг >= rating[0]) & (df.Рейтинг < rating[1])]
+    for i in range(len(choose)):
+        lst = []
+        for row in choose:
+            str = ''
+            lst.append(f"{choose.iloc()[i][f'{row}']}")
+        for n, row in enumerate(choose):
+            str += f"{row}: {lst[n]}\n"
+        bot.send_message(message.chat.id, str)
+bot.polling()

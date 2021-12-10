@@ -24,3 +24,11 @@ def call_rectifier(func1, func2, func3, func4):
         2. Если все функции завершились ошибкой (exception) -> вызвает exception `RuntimeError`
     """
     pass
+    for func in [func1, func2, func3, func4]:
+        try:
+            func()
+            return func
+        except:
+            continue
+        return func
+    raise RuntimeError
