@@ -1,10 +1,10 @@
 import json
 
-from hw2 import custom_dts
-from hw2 import legacy
-from hw2.decorators import call_rectifier
-from hw2.fib import fibonacci
 from hw2.intro import reverse, filter_by_indices
+from hw2 import legacy
+from hw2.fib import fibonacci
+from hw2 import custom_dts
+from hw2.decorators import call_rectifier
 
 
 def test_reverse():
@@ -130,4 +130,3 @@ def test_persistent_list():
     persistence_list.delete(4)
     assert read_store(store_path) == [1, 3]
     assert persistence_list[0] == 1
-
