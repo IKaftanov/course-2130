@@ -17,4 +17,10 @@ def fibonacci():
         ...
     ```
     """
-    pass
+    a = 0
+    b = 1
+    while True:
+        yield a
+        c = a + b
+        a = b
+        b = c

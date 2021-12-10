@@ -1,6 +1,6 @@
 from __future__ import annotations
-
 from typing import List, Any
+import json
 
 
 class CycledList:
@@ -24,9 +24,23 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self.size = size
+        self.index = 0
 
     def append(self, item):
+        if len(self._data) < self.size:
+            self._data.append(item)
+        else:
+            self._data[self.index] = item
+            self.index += 1 if self.index < self.size - 1 else 0
         pass
+
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
 
 
 class Fraction:
@@ -49,19 +63,30 @@ class Fraction:
         self.denominator = denominator
 
     def __truediv__(self, other):
-        pass
+        return Fraction(self.nominator * other.denominator,
+                        self.denominator * other.nominator)
 
     def __add__(self, other):
-        return Fraction(..., ...)
+        return Fraction(self.nominator * other.denominator + self.denominator * other.nominator,
+                        self.denominator * other.denominator)
 
     def __mul__(self, other):
-        pass
+        return Fraction(self.nominator * other.nominator,
+                        self.denominator * other.denominator)
 
     def __sub__(self, other: Fraction) -> Fraction:
-        pass
+        return Fraction(self.nominator * other.denominator - self.denominator * other.nominator,
+                        self.denominator * other.denominator)
+
+    def __eq__(self, other):
+        if (self.nominator / gcd(self.nominator, self.denominator) == other.nominator / gcd(other.nominator, other.denominator)
+                and self.denominator / gcd(self.nominator, self.denominator) == other.denominator / gcd(other.nominator, other.denominator)):
+            return True
+        else:
+            return False
 
     def __repr__(self):
-        return f'{self.nominator}/{self.denominator}'
+        return f'{int(self.nominator / gcd(self.nominator, self.denominator))}/{int(self.denominator / gcd(self.nominator, self.denominator))}'
 
 
 class MyCounter:
@@ -74,13 +99,33 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        self._data = dict()
+        self.iterable = iterable
+        for i in self.iterable:
+            self._data[i] = self._data.get(i, 0) + 1
 
     def append(self, item):
+        if type(item) is int:
+            self._data[item] = self._data.get(item, 0) + 1
+
+        else:
+            for i in item:
+                self._data[i] = self._data.get(i, 0) + 1
         pass
 
     def remove(self, item):
-        pass
+        if type(item) is int and item in self._data.keys():
+            del self._data[item]
+            pass
+        elif type(item) is int and item not in self._data.keys():
+            pass
+        else:
+            for i in item:
+                if i in self._data.keys():
+                    del self._data[i]
+                else:
+                    continue
+            pass
 
 
 class Figure:
@@ -101,21 +146,16 @@ class Square(Figure):
     """
     Реализуйте класс квадрат и два метода для него
     """
-    pass
 
+    def __init__(self, name, length):
+        super().__init__(name)
+        self.length = length
 
-class Container:
-    def __init__(self, data):
-        self.data = data
+    def perimeter(self):
+        return self.length * 4
 
-    def __delitem__(self, key):
-        del self.data[key]
-
-    def __getitem__(self, item):
-        return self.data[item]
-
-    def append(self, item):
-        self.data.append(item)
+    def square(self):
+        return self.length ** 2
 
 
 class PersistentList:
@@ -126,24 +166,45 @@ class PersistentList:
     Формат файла - json
     """
     def __init__(self, iterable: List[Any], path_to_file: str):
+        self.iterable = iterable
+        self.path_to_file = path_to_file
+        with open(self.path_to_file, 'w') as f:
+            json.dump(self.iterable, f)
+
+    def append(self, item):
+        with open(self.path_to_file) as f:
+            self.iterable = json.load(f)
+
+        self.iterable.append(item)
+
+        with open(self.path_to_file, 'w') as f:
+            json.dump(self.iterable, f)
         pass
 
-    def append(self, item) -> None:
-        """add item to list"""
+    def __getitem__(self, item):
+        with open(self.path_to_file) as f:
+            self.iterable = json.load(f)
 
-    def __getitem__(self, index):
-        """ return item by index """
-        pass
+        return self.iterable[item]
 
     def delete(self, index: int) -> None:
         """ delete item by index
-
             if index greater then length of list back to start and repeat
                 [1, 2, 3] -> delete(4) -> [1, 3]
-
             if index lower then delete from end of list
-
         """
+        with open(self.path_to_file) as f:
+            self.iterable = json.load(f)
+
+        if abs(index) < len(self.iterable):
+            del self.iterable[index]
+        else:
+            index = index - len(self.iterable)
+            self.delete(index)
+
+        with open(self.path_to_file, 'w') as f:
+            json.dump(self.iterable, f)
+        pass
 
     def __repr__(self):
         pass
