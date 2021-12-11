@@ -6,7 +6,6 @@ from typing import List, Any
 class CycledList:
     """
     Реализуйте список фиксированой длины, в котором новые элементы перезаписываются
-
     ```
     cycled_list = CycledList(5)
     cycled_list.append(1)
@@ -16,7 +15,6 @@ class CycledList:
     cycled_list.append(5)
     cycled_list.append(6)
     ```
-
     Expected Output:
     ```
     [6, 2, 3, 4, 5]
@@ -24,9 +22,15 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self._append_count = 0
+        self._size = size
 
     def append(self, item):
-        pass
+        if len(self._data) < self._size:
+            self._data.append(item)
+        else:
+            self._data[self._append_count%self.size] = item
+        self._append_count += 1
 
 
 class Fraction:
@@ -37,11 +41,8 @@ class Fraction:
     2. a + b
     3. a * b
     4. a - b
-
     Вы можете найти больше здесь https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types
-
     В каждый момент времени дробь должна быть правильной
-
     """
 
     def __init__(self, nominator, denominator):
@@ -68,9 +69,7 @@ class MyCounter:
     """
     Реализовать тип данных `Counter`, аналогично типу из `collections`
     https://docs.python.org/3/library/collections.html#collections.Counter
-
     Достаточно поддерживать только два метода
-
     """
 
     def __init__(self, iterable):
@@ -84,24 +83,22 @@ class MyCounter:
 
 
 class Figure:
-    def __init__(self, name):
+    """
+    Реализуйте класс квадрат и два метода для него
+    """    
+    def __init__(self, name, size):
         self.name = name
-
+        self.size = size
+ 
     def perimeter(self):
-        return None
+        return self.size*4
 
     def square(self):
-        return None
+        return self.size**2
 
     def __repr__(self):
         return f'Figure({self.name})'
 
-
-class Square(Figure):
-    """
-    Реализуйте класс квадрат и два метода для него
-    """
-    pass
 
 
 class Container:
@@ -122,7 +119,6 @@ class PersistentList:
     """
     Реализуйте список где передаваемый список записывается в файл
     Любая операция удаления/добавления должна изменять файл
-
     Формат файла - json
     """
     def __init__(self, iterable: List[Any], path_to_file: str):
@@ -137,12 +133,9 @@ class PersistentList:
 
     def delete(self, index: int) -> None:
         """ delete item by index
-
             if index greater then length of list back to start and repeat
                 [1, 2, 3] -> delete(4) -> [1, 3]
-
             if index lower then delete from end of list
-
         """
 
     def __repr__(self):
