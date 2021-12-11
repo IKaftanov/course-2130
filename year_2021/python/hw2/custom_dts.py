@@ -1,12 +1,11 @@
 from __future__ import annotations
-
 from typing import List, Any
 
 
 class CycledList:
+    _counter = 0
     """
     Реализуйте список фиксированой длины, в котором новые элементы перезаписываются
-
     ```
     cycled_list = CycledList(5)
     cycled_list.append(1)
@@ -16,7 +15,6 @@ class CycledList:
     cycled_list.append(5)
     cycled_list.append(6)
     ```
-
     Expected Output:
     ```
     [6, 2, 3, 4, 5]
@@ -24,8 +22,15 @@ class CycledList:
     """
     def __init__(self, size: int):
         self._data = []
+        self.size = size
 
     def append(self, item):
+        
+        if len(self._data)<self.size:
+            self._data.append(item)
+        else:
+            self._data[(CycledList._counter)%self.size] = item
+            CycledList._counter += 1
         pass
 
 
@@ -37,40 +42,54 @@ class Fraction:
     2. a + b
     3. a * b
     4. a - b
-
     Вы можете найти больше здесь https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types
-
     В каждый момент времени дробь должна быть правильной
-
     """
 
     def __init__(self, nominator, denominator):
-        self.nominator = nominator
-        self.denominator = denominator
+        def gcd(m, n):
+            while m % n != 0:
+                old_m = m
+                old_n = n
+                m = old_n
+                n = old_m % old_n
+            return n
+        common = gcd(nominator,denominator)
+        self.nominator = nominator/common
+        self.denominator = denominator/common
+        
 
     def __truediv__(self, other):
-        pass
+        newden = self.denominator*other.nominator
+        newnom = self.nominator*other.denominator
+            
+        return Fraction(newnom, newden)
 
     def __add__(self, other):
-        return Fraction(..., ...)
+        newnom = self.nominator*other.denominator + self.denominator*other.nominator
+        newden = self.denominator * other.denominator
+        return Fraction(newnom, newden)
 
     def __mul__(self, other):
-        pass
+        newnom = self.nominator*other.nominator
+        newden=self.denominator*other.denominator
+        return Fraction(newnom, newden)
 
     def __sub__(self, other: Fraction) -> Fraction:
-        pass
+        newnom = self.nominator*other.denominator- self.denominator*other.nominator
+        newden = self.denominator*other.denominator
+        return Fraction(newnom, newden)
 
     def __repr__(self):
         return f'{self.nominator}/{self.denominator}'
+
 
 
 class MyCounter:
     """
     Реализовать тип данных `Counter`, аналогично типу из `collections`
     https://docs.python.org/3/library/collections.html#collections.Counter
-
     Достаточно поддерживать только два метода
-
     """
 
     def __init__(self, iterable):
@@ -101,49 +120,34 @@ class Square(Figure):
     """
     Реализуйте класс квадрат и два метода для него
     """
+    def __init__(self, side):
+        self.side = side
+        super().__init__('Square')
+        
+    def perimeter(self, side):
+        return side*4
+    def square(self, side):
+        return side*side
     pass
-
-
-class Container:
-    def __init__(self, data):
-        self.data = data
-
-    def __delitem__(self, key):
-        del self.data[key]
-
-    def __getitem__(self, item):
-        return self.data[item]
-
-    def append(self, item):
-        self.data.append(item)
 
 
 class PersistentList:
     """
     Реализуйте список где передаваемый список записывается в файл
     Любая операция удаления/добавления должна изменять файл
-
     Формат файла - json
     """
     def __init__(self, iterable: List[Any], path_to_file: str):
         pass
 
-    def append(self, item) -> None:
-        """add item to list"""
-
-    def __getitem__(self, index):
-        """ return item by index """
+    def append(self):
         pass
 
-    def delete(self, index: int) -> None:
-        """ delete item by index
+    def __getitem__(self, item):
+        pass
 
-            if index greater then length of list back to start and repeat
-                [1, 2, 3] -> delete(4) -> [1, 3]
-
-            if index lower then delete from end of list
-
-        """
+    def __delitem__(self, key):
+        pass
 
     def __repr__(self):
         pass
