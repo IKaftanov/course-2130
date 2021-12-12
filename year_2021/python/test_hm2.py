@@ -95,7 +95,7 @@ def test_fraction():
     assert fraction / fraction2 == custom_dts.Fraction(18, 6)
 
     assert fraction * fraction2 == custom_dts.Fraction(9, 12)
-
+# здесь падает. Надо дробь упростить
 
 def test_counter():
     counter = custom_dts.MyCounter([1, 1, 2, 3])
