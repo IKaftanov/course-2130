@@ -22,11 +22,19 @@ class CycledList:
     [6, 2, 3, 4, 5]
     ```
     """
+        
     def __init__(self, size: int):
-        self._data = []
+        self._data = []*size
+        self.size = size
+        self.counter = 0
 
     def append(self, item):
-        pass
+        if self.counter < self.size:
+            self.data.append(item)
+        else:
+            self.data[self.counter%self.size] = item
+        self.counter += 1
+        return self.data
 
 
 class Fraction:
@@ -47,24 +55,73 @@ class Fraction:
     def __init__(self, nominator, denominator):
         self.nominator = nominator
         self.denominator = denominator
+        
+    def gcd(self, a, b):        
+        while b:
+            a, b = b, a%b
+        return a        
+    
+    def __truediv__(self, b):
+        na, da = self.nominator, self.denominator
+        nb, db = b.nominator, b.denominator
+        g1 = self.gcd(na, nb)
+        if g1 > 1:
+            na //= g1
+            nb //= g1
+        g2 = self.gcd(db, da)
+        if g2 > 1:
+            da //= g2
+            db //= g2
+        n, d = na * db, nb * da
+        if d < 0:
+            n, d = -n, -d
+        return Fraction(n, d)
 
-    def __truediv__(self, other):
-        pass
+    def __add__(self, b):
+        na, da = self.nominator, self.denominator
+        nb, db = b.nominator, b.denominator
+        g = self.gcd(da, db)
+        if g == 1:
+            return Fraction(na * db + da * nb, da * db)
+        s = da // g
+        t = na * (db // g) + nb * s
+        g2 = self.gcd(t, g)
+        if g2 == 1:
+            return Fraction(t, s * db)
+        return Fraction(t // g2, s * (db // g2))
+        
+    def __mul__(self, b):
+        na, da = self.nominator, self.denominator
+        nb, db = b.nominator, b.denominator
+        g1 = self.gcd(na, db)
+        if g1 > 1:
+            na //= g1
+            db //= g1
+        g2 = self.gcd(nb, da)
+        if g2 > 1:
+            nb //= g2
+            da //= g2
+        return Fraction(na * nb, db * da)
 
-    def __add__(self, other):
-        return Fraction(..., ...)
 
-    def __mul__(self, other):
-        pass
-
-    def __sub__(self, other: Fraction) -> Fraction:
-        pass
+    def __sub__(self, b: Fraction):
+        na, da = self.nominator, self.denominator
+        nb, db = b.nominator, b.denominator
+        g = self.gcd(da, db)
+        if g == 1:
+            return Fraction(na * db - da * nb, da * db)
+        s = da // g
+        t = na * (db // g) - nb * s
+        g2 = self.gcd(t, g)
+        if g2 == 1:
+            return Fraction(t, s * db, _normalize=False)
+        return Fraction(t // g2, s * (db // g2))
 
     def __repr__(self):
-        return f'{self.nominator}/{self.denominator}'
+        return f'{int(self.nominator/self.gcd(self.nominator, self.denominator))}/{int(self.denominator/self.gcd(self.nominator, self.denominator))}'
 
 
-class MyCounter:
+class MyCounter():
     """
     Реализовать тип данных `Counter`, аналогично типу из `collections`
     https://docs.python.org/3/library/collections.html#collections.Counter
@@ -74,24 +131,30 @@ class MyCounter:
     """
 
     def __init__(self, iterable):
-        self._data = None
+        self._data = {i:iterable.count(i) for i in iterable}    
 
     def append(self, item):
-        pass
+        if item in self._data:
+            self._data[item] +=1
+        else: self._data[item] = 1
+        return self._data
 
     def remove(self, item):
-        pass
+        self._data.pop(item, None)
+        return self._data
 
 
 class Figure:
-    def __init__(self, name):
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
         self.name = name
 
     def perimeter(self):
-        return None
+        return 2*(self.a + self.b)
 
     def square(self):
-        return None
+        return self.a*self.b
 
     def __repr__(self):
         return f'Figure({self.name})'
