@@ -1,0 +1,56 @@
+import telebot
+from telebot import types
+bot = telebot.TeleBot('2101475882:AAEW5GxZL2FRRF_UPt-fc0P4Vq9waY27v44')
+
+@bot.message_handler(commands=['start'])
+
+def start(message):
+     markup = types.ReplyKeyboardMarkup(resize_keyboard= True)
+     button1 = types.KeyboardButton('Центральный')
+     button2 = types.KeyboardButton('Северный')
+     button3 = types.KeyboardButton('Северо-Восточный')
+     button4 = types.KeyboardButton('Восточный')
+     button5 = types.KeyboardButton('Юго-Восточный')
+     button6 = types.KeyboardButton('Южный')
+     button7 = types.KeyboardButton('Юго-Западный')
+     button8 = types.KeyboardButton('Западный')
+     button9 = types.KeyboardButton('Северо-Западный')
+     button10 = types.KeyboardButton('Зеленоградский')
+     button11 = types.KeyboardButton('Троицкий')
+     button12 = types.KeyboardButton('Новомосковский')
+
+     markup.add(button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12)
+     bot.send_message(message.chat.id, 'Привет, этот бот умеет выдавать список топовых баров по каждому округу Москвы. Выбери округ из меню ниже :)'.format(message.from_user), reply_markup= markup)
+
+
+@bot.message_handler(content_types=['text'])
+def get_text_messages(message):
+    if message.text == "Центральный":
+        bot.send_message(message.from_user.id, "1. Зинзивер - прекрасная доска настоек по 700, прекрасная публика, ужасная хреновуха и ерш\r\n2. На кранах - любое фруктовое или ягодное пиво прекрасно, томатное также не стоит обделять вниманием\r\n3. Bambule - коктейли по 700 руб, зато красивые официенты и инстаграммная обстановка\r\n4. Широка на широкую - отличная рюмочная\r\n5. Сентябрь - много вина")
+    elif message.text == "Северный":
+        bot.send_message(message.from_user.id, "До центра совсем чуть-чуть. Лучше доехать до него")
+    elif message.text == "Северо-Восточный":
+        bot.send_message(message.from_user.id, "Я тут живу и не советую в этом округе ходить в бары. Лучше взять такси и доехать до центра")
+    elif message.text == "Восточный":
+        bot.send_message(message.from_user.id, "Лучше взять такси и доехать до центра")
+    elif message.text == "Юго-Восточный":
+        bot.send_message(message.from_user.id, "Лучше взять такси и доехать до центра")
+    elif message.text == "Южный":
+        bot.send_message(message.from_user.id, "Есть антирекомендация - Сыто-Пьяно - ужасно разбавленный алкголь, не напьешься")
+    elif message.text == "Юго-Западный":
+        bot.send_message(message.from_user.id, "Братья Крафт - отличный персиковый и барбарисовый сидры")
+    elif message.text == "Западный":
+        bot.send_message(message.from_user.id, "Kwak - берите Delirium Red")
+    elif message.text == "Северо-Западный":
+        bot.send_message(message.from_user.id, "Сибирская корона")
+    elif message.text == "Зеленоградский":
+        bot.send_message(message.from_user.id, "Лучше взять такси и доехать до центра")
+    elif message.text == "Троицкий":
+        bot.send_message(message.from_user.id, "Лучше взять такси и доехать до центра")
+    elif message.text == "Новомосковский":
+        bot.send_message(message.from_user.id, "Лучше взять такси и доехать до центра")
+    else:
+        bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /start")
+
+
+bot.polling(none_stop = True)

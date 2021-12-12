@@ -15,7 +15,8 @@ def reverse(lst: Optional[List[Any]]):
         [4, 3, 2, 1]
     ```
     """
-    return
+    reversed_list = lst[::-1]
+    return reversed_list
 
 
 def filter_by_indices(lst: Optional[List[Any]], indices: Optional[List[Any]]):
@@ -35,4 +36,9 @@ def filter_by_indices(lst: Optional[List[Any]], indices: Optional[List[Any]]):
         [3, 4]
     ```
     """
-    return
+    indices.sort()
+    dlina = len(lst)
+    for i in indices[::-1]:
+        if i < dlina:
+            del lst[i]
+    return lst
