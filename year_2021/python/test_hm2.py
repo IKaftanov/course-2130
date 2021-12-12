@@ -1,12 +1,3 @@
-import json
-
-from hw2 import custom_dts
-from hw2 import legacy
-from hw2.decorators import call_rectifier
-from hw2.fib import fibonacci
-from hw2.intro import reverse, filter_by_indices
-
-
 def test_reverse():
     assert reverse([1, 2, 3, 4]) == [4, 3, 2, 1]
     assert reverse([]) == []
@@ -37,11 +28,13 @@ def test_legacy_t3():
 
 
 def test_legacy_t4():
-    assert legacy.t4('abcd', 'cb')
-    assert legacy.t4('', '')
-    assert not legacy.t4('ab', 'cx')
+    assert legacy.t4('abcd', 'cb')=='Есть'
+    assert legacy.t4('', '')=='Есть'
+    assert not legacy.t4('ab', 'cx')=='Нет'
 
-
+def test_legacy_t5():
+    assert legacy.t5(['abd',5,7,'avc',5])==[5, 7, 5, 175]
+    
 def test_fibonacci():
     iterator = fibonacci()
     assert next(iterator) == 0
@@ -84,18 +77,12 @@ def test_call_rectifier():
 
 
 def test_fraction():
-    fraction = custom_dts.Fraction(9, 6)
-    assert fraction == custom_dts.Fraction(3, 2)
-
-    fraction2 = custom_dts.Fraction(1, 2)
-    assert fraction + fraction2 == custom_dts.Fraction(2, 1)
-
-    assert fraction - fraction2 == custom_dts.Fraction(1, 1)
-
-    assert fraction / fraction2 == custom_dts.Fraction(18, 6)
-
-    assert fraction * fraction2 == custom_dts.Fraction(9, 12)
-
+    fract = custom_dts.Fraction(5,4)
+    other = custom_dts.Fraction(30,2)
+    assert (Fraction(5,4)+Fraction(30,2))==fract.__add__(other)
+    assert (Fraction(5,4)-Fraction(30,2))==fract.__sub__(other)
+    assert (Fraction(5,4)/Fraction(30,2))==fract.__truediv__(other)
+    assert (Fraction(5,4)*Fraction(30,2))==fract.__mul__(other)
 
 def test_counter():
     counter = custom_dts.MyCounter([1, 1, 2, 3])
@@ -117,9 +104,9 @@ def test_square():
 def test_persistent_list():
     def read_store(file_path):
         with open(file_path) as file:
-            return json.load(file)
+            json.load(file)
 
-    store_path = 'store.json'
+    store_path = 'store'
 
     persistence_list = custom_dts.PersistentList([1, 2, 3], store_path)
     assert read_store(store_path) == [1, 2, 3]
@@ -130,4 +117,3 @@ def test_persistent_list():
     persistence_list.delete(4)
     assert read_store(store_path) == [1, 3]
     assert persistence_list[0] == 1
-
