@@ -1,5 +1,5 @@
 
-def fibonacci():
+def fibonacci(a1=0, a2=1):
     """
     # Задание 4
 
@@ -16,5 +16,7 @@ def fibonacci():
         next call: 1
         ...
     ```
-    """
-    pass
+    """    
+    while True:
+        yield a1
+        a2, a1 = a1 + a2, a2
