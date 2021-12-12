@@ -1,0 +1,118 @@
+import telebot
+from exchange_rates import ExchangeRatesLoader
+from config import TOKEN
+
+bot = telebot.TeleBot(TOKEN)
+
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.send_message(message.chat.id, 'Добрый день! С помощью этого бота вы можете получить информацию '
+                                      'об официальных курсах валют, установленных ЦБ РФ, конвертировать рубли '
+                                      'в иностранную валюту или иностранную валюту в рубли.\n'
+                                      'Напишите что-нибудь, чтобы начать.')
+
+
+@bot.message_handler(content_types='text')
+def get_info(message):
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    markup.row('Узнать официальный курс валюты')
+    markup.row('Конвертировать рубли в иностранную валюту')
+    markup.row('Конвертировать иностранную валюту в рубли')
+    markup.row('Посмотреть список доступных валют')
+    msg = bot.send_message(message.chat.id, 'Пожалуйста, выберите действие.', reply_markup=markup)
+    bot.register_next_step_handler(msg, received_answer)
+
+
+def received_answer(message):
+    if message.text == 'Узнать официальный курс валюты':
+        msg = bot.send_message(message.chat.id, 'Введите буквенный код интересующей вас валюты. '
+                                                'Пример: USD')
+        bot.register_next_step_handler(msg, exchange_rate)
+    elif message.text == 'Конвертировать рубли в иностранную валюту':
+        msg = bot.send_message(message.chat.id, 'Введите буквенный код интересующей вас валюты '
+                                                'и сумму для конвертации через пробел. '
+                                                'Пример: USD 1000')
+        bot.register_next_step_handler(msg, convert_to_foreign)
+    elif message.text == 'Конвертировать иностранную валюту в рубли':
+        msg = bot.send_message(message.chat.id, 'Введите буквенный код интересующей вас валюты '
+                                                'и сумму для конвертации через пробел. '
+                                                'Пример: USD 1000')
+        bot.register_next_step_handler(msg, convert_to_rub)
+    elif message.text == 'Посмотреть список доступных валют':
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        markup.row('Вернуться к выбору действия')
+        loader = ExchangeRatesLoader()
+        msg = bot.send_message(message.chat.id, loader.print_available_currencies(), reply_markup=markup)
+        bot.register_next_step_handler(msg, get_info)
+    else:
+        msg = bot.send_message(message.chat.id, 'Ошибка!\n'
+                                                'Пожалуйста, выберите действие.')
+        bot.register_next_step_handler(msg, received_answer)
+
+
+def exchange_rate(message):
+    try:
+        loader = ExchangeRatesLoader()
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        markup.row('Завершить сессию')
+        markup.row('Узнать курс другой валюты')
+        msg = bot.send_message(message.chat.id, loader.get_exchange_rate(message.text.upper()),
+                               reply_markup=markup)
+        bot.register_next_step_handler(msg, end_session)
+    except:
+        msg = bot.send_message(message.chat.id, 'Про такую валюту информации нет.\n'
+                                                'Проверьте, пожалуйста, не допустили ли вы ошибку '
+                                                'при написании буквенного кода валюты.')
+        bot.register_next_step_handler(msg, exchange_rate)
+
+
+def convert_to_foreign(message):
+    try:
+        user_info = message.text.split()
+        currency_key = user_info[0].upper()
+        amount = float(user_info[1])
+        loader = ExchangeRatesLoader()
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        markup.row('Завершить сессию')
+        msg = bot.send_message(message.chat.id, loader.convert_to_foreign(currency_key, amount),
+                               reply_markup=markup)
+        bot.register_next_step_handler(msg, end_session)
+    except:
+        msg = bot.send_message(message.chat.id, 'Ошибка!\n'
+                                                'Введите буквенный код интересующей вас валюты '
+                                                'и сумму для конвертации через пробел. '
+                                                'Пример: USD 1000')
+        bot.register_next_step_handler(msg, convert_to_foreign)
+
+
+def convert_to_rub(message):
+    try:
+        user_info = message.text.split()
+        currency_key = user_info[0].upper()
+        amount = float(user_info[1])
+        loader = ExchangeRatesLoader()
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        markup.row('Завершить сессию')
+        msg = bot.send_message(message.chat.id, loader.convert_to_rub(currency_key, amount),
+                               reply_markup=markup)
+        bot.register_next_step_handler(msg, end_session)
+    except:
+        msg = bot.send_message(message.chat.id, 'Ошибка!\n'
+                                                'Введите буквенный код интересующей вас валюты '
+                                                'и сумму для конвертации через пробел. '
+                                                'Пример: USD 1000')
+        bot.register_next_step_handler(msg, convert_to_rub)
+
+
+def end_session(message):
+    if message.text == 'Узнать курс другой валюты':
+        msg = bot.send_message(message.chat.id, 'Введите буквенный код интересующей вас валюты. '
+                                                'Пример: USD')
+        bot.register_next_step_handler(msg, exchange_rate)
+    else:
+        msg = bot.send_message(message.chat.id, 'Сессия завершена. Напишите что-нибудь, чтобы начать новую')
+        bot.register_next_step_handler(msg, get_info)
+
+
+bot.polling(none_stop=True)
