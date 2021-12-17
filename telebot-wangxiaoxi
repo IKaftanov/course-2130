@@ -1,0 +1,151 @@
+import poplib
+import base64
+import time
+from email.parser import Parser
+from email.header import decode_header
+
+from email.utils import parseaddr
+
+
+class AcceptEmail(object):
+
+    def __init__(self, user_email, password, pop3_server='pop.qq.com'):
+        self.user_email = user_email
+        self.password = password
+        self.pop3_server = pop3_server
+
+        self.connect_email_server()
+
+    def connect_email_server(self):
+        self.server = poplib.POP3(self.pop3_server)
+      
+   
+
+        
+        self.server.user(self.user_email)
+        self.server.pass_(self.password)
+
+    def __del__(self):
+        
+        self.server.close()
+
+    def get_email_count(self):
+        
+        email_num, email_size = self.server.stat()
+        
+        return email_num
+
+    def receive_email_info(self, now_count=None):
+        
+        email_num, email_size = self.server.stat()
+        
+        self.email_count = email_num
+        self.email_sumsize = email_size
+
+        
+        rsp, msg_list, rsp_siz = self.server.list()
+        
+        
+        self.response_status = rsp
+        self.response_size = rsp_siz
+
+      
+        
+
+        total_mail_numbers = now_count
+
+        rsp, msglines, msgsiz = self.server.retr(total_mail_numbers)
+      
+
+        
+        msg_content = b'\r\n'.join(msglines).decode('gbk')
+        msg = Parser().parsestr(text=msg_content)
+        self.msg = msg
+        
+
+    def recv(self, now_count=None):
+        self.receive_email_info(now_count)
+        self.parser()
+
+    def get_email_title(self):
+        subject = self.msg['Subject']
+        value, charset = decode_header(subject)[0]
+        if charset:
+            value = value.decode(charset)
+       
+        self.email_title = value
+
+    def get_sender_info(self):
+        hdr, addr = parseaddr(self.msg['From'])
+        
+        name, charset = decode_header(hdr)[0]
+        if charset:
+            name = name.decode(charset)
+        self.sender_qq_name = name
+        self.sender_qq_email = addr
+        
+
+    def get_email_content(self):
+        content = self.msg.get_payload()
+      
+        content_charset = content[0].get_content_charset()  
+        text = content[0].as_string().split('base64')[-1]
+        text_content = base64.b64decode(text).decode(content_charset)  
+        self.email_content = text_content
+        
+
+       
+        content_charset = content[1].get_content_charset()
+        text = content[1].as_string().split('base64')[-1]
+        
+
+        
+
+    def parser(self):
+        self.get_email_title()
+        self.get_sender_info()
+        self.get_email_content()
+
+
+def get_new_mail(dic, second=5):
+    t = AcceptEmail(**dic)
+    now_count = t.get_email_count()
+    print('The number of emails when opened is:%s' % now_count)
+    
+    while True:
+        obj = AcceptEmail(**dic)
+        count = obj.get_email_count()
+        if count > now_count:
+            new_mail_count = count - now_count
+            print('Number of new emails :%s' % new_mail_count)
+            for i in range(1, new_mail_count + 1):
+                obj = AcceptEmail(**dic)
+                now_count += 1
+                obj.recv(now_count)
+
+                yield {"title": obj.email_title, "sender": obj.sender_qq_name, "sender_email": obj.sender_qq_email,
+                       "email_content": obj.email_content}
+             
+
+       
+
+        time.sleep(second)
+
+
+if __name__ == '__main__':
+    dic = {
+        'user_email': 'xxx@qq.com',
+        'password': 'xxx',
+    }
+    print('Listening for new messages on the mail server side---')
+    try:
+        iterator = get_new_mail(dic)
+    except TypeError:
+        print('Listening to the wrong content, there are images, data, etc., can not be parsed and reported an error, not plain text content')
+    else:
+        for dic in iterator:
+            
+            print('-' * 30)
+            print("Email tittle:%s\nSender:%s\nSender Email:%s\nMail content:%s" % (
+                dic["title"], dic["sender"], dic["sender_email"], dic["email_content"]))
+            print('-' * 30)
